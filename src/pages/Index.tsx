@@ -165,8 +165,8 @@ const Index = () => {
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-              7 data-driven growth levers leveraging partnerships with REI, Dick's Sporting Goods, and trail running communities
-            </p>
+                          Data-driven growth levers for leveraging partnerships and camper growth
+                        </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link to="/group-trip">
                 <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-8">
