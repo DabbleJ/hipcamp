@@ -103,24 +103,11 @@ const Index = () => {
       target: "Curious but intimidated first-timers",
       insight: "Gear ownership is the biggest barrier to entry",
       experiment: "Curate only ready-to-go sites (tents, yurts, cabins). Position as: 'Camping, no gear needed'. Distribute via lifestyle creators, urban audiences, parents.",
-      whyItWorks: ["Expands TAM beyond 'campers'", "Removes biggest barrier to entry", "Parents are a huge segment"],
-      scrappyVersion: "Filter + landing page + influencer partnerships",
-      metrics: { potential: "5-10x", effort: "Medium", impact: "High" }
-    },
-    {
-      id: "matching",
-      icon: Heart,
-      title: "Host x Community Matching",
-      subtitle: "Niche Community Alignment",
-      color: "from-violet-500 to-purple-600",
-      target: "Niche communities + underutilized hosts",
-      insight: "Specialized properties need specialized audiences",
-      experiment: "Match: Lavender farm → yoga groups, Large land → trail running retreats, Waterfront → college clubs",
-      whyItWorks: ["Creates perfect property-community fit", "Increases host utilization", "Builds community loyalty"],
-      scrappyVersion: "Manual matching + outreach to 20 hosts",
-      metrics: { potential: "3-7x", effort: "Medium", impact: "High" }
-    }
-  ];
+            whyItWorks: ["Expands TAM beyond 'campers'", "Removes biggest barrier to entry", "Parents are a huge segment"],
+            scrappyVersion: "Filter + landing page + influencer partnerships",
+            metrics: { potential: "5-10x", effort: "Medium", impact: "High" }
+          }
+        ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-stone-50 via-emerald-50/30 to-amber-50/30">
@@ -201,7 +188,7 @@ const Index = () => {
       <section className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            7 Demand Growth Lever Experiments
+            6 Demand Growth Lever Experiments
           </h2>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Each strategy targets a specific audience with a tailored approach to drive demand and acquisition
