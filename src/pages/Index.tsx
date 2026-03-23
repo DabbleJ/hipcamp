@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,11 +20,13 @@ import {
   Target,
   CheckCircle2,
   Flame,
-  LayoutDashboard
+  LayoutDashboard,
+  LogOut
 } from "lucide-react";
 
 const Index = () => {
   const [activeStrategy, setActiveStrategy] = useState<string>("group-trip");
+  const { logout } = useAuth();
 
   const strategies = [
     {
@@ -132,19 +135,28 @@ const Index = () => {
               <span className="font-bold text-xl text-gray-900">Hipcamp Growth</span>
             </div>
             <div className="flex gap-3">
-              <Link to="/dashboard">
-                <Button variant="outline" size="sm" className="rounded-full">
-                  <LayoutDashboard className="w-4 h-4 mr-2" />
-                  Dashboard
-                </Button>
-              </Link>
-              <Link to="/group-trip">
-                <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 rounded-full">
-                  <Users className="w-4 h-4 mr-2" />
-                  Try Group Trip
-                </Button>
-              </Link>
-            </div>
+                          <Link to="/dashboard">
+                            <Button variant="outline" size="sm" className="rounded-full">
+                              <LayoutDashboard className="w-4 h-4 mr-2" />
+                              Dashboard
+                            </Button>
+                          </Link>
+                          <Link to="/group-trip">
+                            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 rounded-full">
+                              <Users className="w-4 h-4 mr-2" />
+                              Try Group Trip
+                            </Button>
+                          </Link>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={logout}
+                            className="rounded-full text-gray-600 hover:text-gray-900"
+                          >
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Logout
+                          </Button>
+                        </div>
           </div>
         </div>
       </nav>

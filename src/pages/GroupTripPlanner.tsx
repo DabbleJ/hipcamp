@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -20,10 +21,15 @@ import {
   Share2,
   Copy,
   Mail,
-  Phone
+  Phone,
+  LogOut,
+  Home
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const GroupTripPlanner = () => {
+  const { logout } = useAuth();
+
   const [step, setStep] = useState(1);
   const [tripData, setTripData] = useState({
     destination: "",
@@ -128,20 +134,36 @@ const GroupTripPlanner = () => {
       <header className="bg-white border-b border-gray-200">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                <Users className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900">Group Trip Planner</h1>
-                <p className="text-gray-600">Organize your next outdoor adventure</p>
-              </div>
-            </div>
-            <Badge className="bg-emerald-100 text-emerald-800">
-              <CheckCircle2 className="w-3 h-3 mr-1" />
-              Beta
-            </Badge>
-          </div>
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                          <Users className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <h1 className="text-2xl font-bold text-gray-900">Group Trip Planner</h1>
+                          <p className="text-gray-600">Organize your next outdoor adventure</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <Badge className="bg-emerald-100 text-emerald-800">
+                          <CheckCircle2 className="w-3 h-3 mr-1" />
+                          Beta
+                        </Badge>
+                        <Link to="/">
+                          <Button variant="outline" size="sm">
+                            <Home className="w-4 h-4 mr-2" />
+                            Home
+                          </Button>
+                        </Link>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={logout}
+                          className="text-gray-600 hover:text-gray-900"
+                        >
+                          <LogOut className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
         </div>
       </header>
 
