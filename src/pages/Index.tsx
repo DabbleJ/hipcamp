@@ -171,7 +171,7 @@ const Index = () => {
               Growth Strategy Framework
             </Badge>
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 tracking-tight">
-              Grow Cammer Demand
+              Grow Camper Demand
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-amber-600">
                 for Hipcamp
               </span>
