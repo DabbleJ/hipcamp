@@ -33,7 +33,7 @@ const Index = () => {
       color: "from-emerald-500 to-teal-600",
       target: "Trail running groups, climbing gyms, college outdoor clubs",
       insight: "These groups already organize trips—it's just messy (Google Docs, Venmo, text threads)",
-      experiment: "Create a lightweight 'Plan a Group Trip' flow on Hipcamp. One person (group leader) selects a site → invites others → shared booking / split payment. Seed with 10–20 communities.",
+      experiment: "Create a lightweight 'Plan a Group Trip' flow on The Dyrt. One person (group leader) selects a site → invites others → shared booking / split payment. Seed with 10–20 communities.",
       whyItWorks: ["Converts existing intent (not trying to create new behavior)", "High LTV (groups repeat trips)", "One organizer = 5–20 new users"],
       scrappyVersion: "No product build—just a landing page + concierge support + discount code",
       metrics: { potential: "5-20x", effort: "Low", impact: "High" }
@@ -44,7 +44,7 @@ const Index = () => {
       title: "First Trip Free(ish)",
       subtitle: "For Lapsed Campers",
       color: "from-orange-500 to-amber-600",
-      target: "Existing Hipcamp users who haven't booked in 6–12 months",
+      target: "Existing The Dyrt users who haven't booked in 6–12 months",
       insight: "Dormant users need a compelling reason to return",
       experiment: "Email/SMS: 'We'll cover $25–$50 of your next stay if you bring someone new'. Require +1 new user to unlock the credit.",
       whyItWorks: ["Reactivates dormant demand", "Bakes in viral loop (each booking pulls in a new user)", "Lower CAC vs paid"],
@@ -59,7 +59,7 @@ const Index = () => {
       color: "from-purple-500 to-indigo-600",
       target: "Trail runners, cyclists, festival-goers",
       insight: "People already traveling for events—they just need lodging",
-      experiment: "Partner with specific events (trail races, gravel rides). Create Hipcamp 'zones' near events (clusters of bookable sites). Bundle: stay + event proximity + community.",
+      experiment: "Partner with specific events (trail races, gravel rides). Create The Dyrt 'zones' near events (clusters of bookable sites). Bundle: stay + event proximity + community.",
       whyItWorks: ["Taps into time-bound intent", "People already traveling → just need lodging", "Can dominate niche verticals"],
       scrappyVersion: "Start with 2-3 trail race partnerships",
       metrics: { potential: "3-5x", effort: "Medium", impact: "High" }
@@ -72,7 +72,7 @@ const Index = () => {
       color: "from-blue-500 to-cyan-600",
       target: "College outdoor programs, outing clubs",
       insight: "Students are high-frequency + social, creating long-term habits early",
-      experiment: "Recruit 1–2 'Hipcamp Trip Leads' per campus. Give them: $ credits, Early access to curated sites, Simple booking tools for group trips.",
+      experiment: "Recruit 1–2 'The Dyrt Trip Leads' per campus. Give them: $ credits, Early access to curated sites, Simple booking tools for group trips.",
       whyItWorks: ["Students are high-frequency + social", "Creates long-term habit early", "Word-of-mouth > paid ads"],
       scrappyVersion: "Pilot with 5 universities in outdoor-heavy regions",
       metrics: { potential: "10-50x", effort: "Medium", impact: "High" }
@@ -115,7 +115,7 @@ const Index = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
                 <Flame className="w-5 h-5 text-white" />
               </div>
-              <span className="font-bold text-xl text-gray-900">Hipcamp Growth</span>
+              <span className="font-bold text-xl text-gray-900">The Dyrt Growth</span>
             </div>
             <div className="flex gap-3">
                           <Link to="/dashboard">
@@ -147,7 +147,7 @@ const Index = () => {
             <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 tracking-tight">
               Grow Camper Demand
               <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-amber-600">
-                for Hipcamp
+                for The Dyrt
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
@@ -395,7 +395,7 @@ const Index = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-4 text-center">
           <p className="text-gray-400">
-            Growth Strategy Framework for Hipcamp • Built with data-driven insights
+            Growth Strategy Framework for The Dyrt • Built with data-driven insights
           </p>
         </div>
       </footer>

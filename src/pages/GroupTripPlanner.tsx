@@ -119,7 +119,7 @@ const GroupTripPlanner = () => {
   };
 
   const handleShareTrip = () => {
-    const shareUrl = `https://hipcamp.com/group-trip/${Date.now()}`;
+    const shareUrl = `https://thedyrt.com/group-trip/${Date.now()}`;
     navigator.clipboard.writeText(shareUrl);
     alert("Trip link copied to clipboard!");
   };
