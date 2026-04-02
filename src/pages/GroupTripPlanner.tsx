@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,14 +21,11 @@ import {
   Copy,
   Mail,
   Phone,
-  LogOut,
   Home
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const GroupTripPlanner = () => {
-  const { logout } = useAuth();
-
   const [step, setStep] = useState(1);
   const [tripData, setTripData] = useState({
     destination: "",
@@ -154,14 +150,6 @@ const GroupTripPlanner = () => {
                             Home
                           </Button>
                         </Link>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={logout}
-                          className="text-gray-600 hover:text-gray-900"
-                        >
-                          <LogOut className="w-4 h-4" />
-                        </Button>
                       </div>
                     </div>
         </div>

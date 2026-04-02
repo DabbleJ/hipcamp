@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,20 +12,17 @@ import {
   GraduationCap, 
   MapPin, 
   Tent, 
-  Heart,
   ArrowRight,
   Sparkles,
   TrendingUp,
   Target,
   CheckCircle2,
   Flame,
-  LayoutDashboard,
-  LogOut
+  LayoutDashboard
 } from "lucide-react";
 
 const Index = () => {
   const [activeStrategy, setActiveStrategy] = useState<string>("group-trip");
-  const { logout } = useAuth();
 
   const strategies = [
     {
@@ -134,15 +130,6 @@ const Index = () => {
                               Try Group Trip
                             </Button>
                           </Link>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={logout}
-                            className="rounded-full text-gray-600 hover:text-gray-900"
-                          >
-                            <LogOut className="w-4 h-4 mr-2" />
-                            Logout
-                          </Button>
                         </div>
           </div>
         </div>

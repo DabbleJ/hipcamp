@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -21,14 +20,11 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
-  LogOut,
   Home
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const CampaignDashboard = () => {
-  const { logout } = useAuth();
-
   const [campaigns, setCampaigns] = useState([
     {
       id: 1,
@@ -160,31 +156,23 @@ const CampaignDashboard = () => {
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-                      <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Campaign Dashboard</h1>
-                        <p className="text-gray-600 text-sm">Track and manage growth initiatives</p>
-                      </div>
-                      <div className="flex gap-3">
-                        <Link to="/">
-                          <Button variant="outline" size="sm">
-                            <Home className="w-4 h-4 mr-2" />
-                            Home
-                          </Button>
-                        </Link>
-                        <Button className="bg-emerald-600 hover:bg-emerald-700">
-                          <Play className="w-4 h-4 mr-2" />
-                          New Campaign
-                        </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={logout}
-                          className="text-gray-600 hover:text-gray-900"
-                        >
-                          <LogOut className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Campaign Dashboard</h1>
+              <p className="text-gray-600 text-sm">Track and manage growth initiatives</p>
+            </div>
+            <div className="flex gap-3">
+              <Link to="/">
+                <Button variant="outline" size="sm">
+                  <Home className="w-4 h-4 mr-2" />
+                  Home
+                </Button>
+              </Link>
+              <Button className="bg-emerald-600 hover:bg-emerald-700">
+                <Play className="w-4 h-4 mr-2" />
+                New Campaign
+              </Button>
+            </div>
+          </div>
         </div>
       </header>
 
