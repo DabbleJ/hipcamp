@@ -138,7 +138,7 @@ const Index = () => {
           <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
             <div>
               <Badge className="mb-5 rounded-full border-amber-300/40 bg-amber-300/15 px-4 py-1.5 text-amber-100 hover:bg-amber-300/20">
-                Airbnb Experiences meets Hipcamp
+                Outdoor experiences hosted on Hipcamp
               </Badge>
               <h1 className="max-w-4xl text-5xl font-black tracking-tight md:text-7xl">
                 Host unforgettable outdoor events on Hipcamp.
