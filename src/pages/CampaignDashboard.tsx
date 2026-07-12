@@ -1,373 +1,281 @@
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
-  Users, 
-  Gift, 
-  Calendar, 
-  GraduationCap, 
-  MapPin, 
-  Tent, 
-  Heart,
-  TrendingUp,
+import {
   ArrowUpRight,
-  Play,
-  Pause,
-  MoreHorizontal,
+  CalendarDays,
   CheckCircle2,
   Clock,
-  AlertCircle,
-  Home
+  Flame,
+  Home,
+  MapPin,
+  MoreHorizontal,
+  Mountain,
+  MoonStar,
+  Plus,
+  Sparkles,
+  Ticket,
+  Utensils,
+  Waves,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
-const CampaignDashboard = () => {
-  const [campaigns, setCampaigns] = useState([
-    {
-      id: 1,
-      name: "Group Trip OS - Trail Running Groups",
-      strategy: "group-trip",
-      status: "active",
-      progress: 65,
-      metrics: {
-        leads: 847,
-        conversions: 156,
-        revenue: 23400,
-        cac: 42
-      },
-      target: 1200,
-      startDate: "2024-01-15",
-      endDate: "2024-03-15"
-    },
-    {
-      id: 2,
-      name: "First Trip Free - Lapsed Users",
-      strategy: "first-trip",
-      status: "active",
-      progress: 45,
-      metrics: {
-        leads: 2341,
-        conversions: 312,
-        revenue: 15600,
-        cac: 28
-      },
-      target: 5000,
-      startDate: "2024-02-01",
-      endDate: "2024-04-01"
-    },
-    {
-      id: 3,
-      name: "Event-Based - Trail Race Partnerships",
-      strategy: "event-based",
-      status: "paused",
-      progress: 30,
-      metrics: {
-        leads: 234,
-        conversions: 45,
-        revenue: 8900,
-        cac: 65
-      },
-      target: 800,
-      startDate: "2024-03-01",
-      endDate: "2024-05-01"
-    },
-    {
-      id: 4,
-      name: "Campus Ambassador - University Pilot",
-      strategy: "campus",
-      status: "planned",
-      progress: 0,
-      metrics: {
-        leads: 0,
-        conversions: 0,
-        revenue: 0,
-        cac: 0
-      },
-      target: 2500,
-      startDate: "2024-04-01",
-      endDate: "2024-06-01"
-    },
-    {
-      id: 5,
-      name: "No Gear Needed - First Timers",
-      strategy: "no-gear",
-      status: "planned",
-      progress: 0,
-      metrics: {
-        leads: 0,
-        conversions: 0,
-        revenue: 0,
-        cac: 0
-      },
-      target: 3000,
-      startDate: "2024-04-15",
-      endDate: "2024-07-15"
-    }
-  ]);
+const events = [
+  {
+    id: 1,
+    name: "Redwood Supper & Stargazing",
+    type: "farm-table",
+    status: "live",
+    location: "Big Sur, CA",
+    date: "Aug 16",
+    capacity: 48,
+    booked: 39,
+    waitlist: 12,
+    revenue: 3705,
+    host: "Redwood Grove Campground",
+  },
+  {
+    id: 2,
+    name: "Beginner Backpacking Clinic",
+    type: "skill-shops",
+    status: "live",
+    location: "Mt. Hood, OR",
+    date: "Aug 23",
+    capacity: 30,
+    booked: 22,
+    waitlist: 4,
+    revenue: 1980,
+    host: "Fern Valley Basecamp",
+  },
+  {
+    id: 3,
+    name: "Trail Run Campout Weekend",
+    type: "guided-adventures",
+    status: "sold-out",
+    location: "Bend, OR",
+    date: "Sep 6",
+    capacity: 60,
+    booked: 60,
+    waitlist: 27,
+    revenue: 7200,
+    host: "Juniper Ridge Ranch",
+  },
+  {
+    id: 4,
+    name: "Morning Yoga on the Farm",
+    type: "wellness-retreats",
+    status: "draft",
+    location: "Petaluma, CA",
+    date: "Sep 14",
+    capacity: 24,
+    booked: 0,
+    waitlist: 0,
+    revenue: 0,
+    host: "Lavender Hill Farm",
+  },
+  {
+    id: 5,
+    name: "Dark Sky Family Night",
+    type: "stargazing",
+    status: "live",
+    location: "Joshua Tree, CA",
+    date: "Sep 21",
+    capacity: 40,
+    booked: 31,
+    waitlist: 8,
+    revenue: 2480,
+    host: "Desert Moon Camp",
+  },
+];
 
-  const strategyIcons: Record<string, any> = {
-    "group-trip": Users,
-    "first-trip": Gift,
-    "event-based": Calendar,
-    "campus": GraduationCap,
-    "near-me": MapPin,
-    "no-gear": Tent,
-    "matching": Heart
+const typeIcons: Record<string, typeof Mountain> = {
+  "guided-adventures": Mountain,
+  "farm-table": Utensils,
+  "skill-shops": Sparkles,
+  "wellness-retreats": Waves,
+  stargazing: MoonStar,
+};
+
+const typeColors: Record<string, string> = {
+  "guided-adventures": "bg-emerald-700",
+  "farm-table": "bg-amber-700",
+  "skill-shops": "bg-lime-700",
+  "wellness-retreats": "bg-teal-700",
+  stargazing: "bg-indigo-700",
+};
+
+const getStatusBadge = (status: string) => {
+  switch (status) {
+    case "live":
+      return <Badge className="rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100"><CheckCircle2 className="mr-1 h-3 w-3" />Live</Badge>;
+    case "sold-out":
+      return <Badge className="rounded-full bg-amber-100 text-amber-900 hover:bg-amber-100"><Ticket className="mr-1 h-3 w-3" />Sold out</Badge>;
+    case "draft":
+      return <Badge className="rounded-full bg-slate-100 text-slate-700 hover:bg-slate-100"><Clock className="mr-1 h-3 w-3" />Draft</Badge>;
+    default:
+      return <Badge variant="outline">{status}</Badge>;
+  }
+};
+
+const EventDashboard = () => {
+  const liveEvents = events.filter((event) => event.status === "live");
+  const totalBooked = events.reduce((sum, event) => sum + event.booked, 0);
+  const totalCapacity = events.reduce((sum, event) => sum + event.capacity, 0);
+  const totalRevenue = events.reduce((sum, event) => sum + event.revenue, 0);
+  const totalWaitlist = events.reduce((sum, event) => sum + event.waitlist, 0);
+  const sellThrough = Math.round((totalBooked / totalCapacity) * 100);
+
+  const renderEventCard = (event: (typeof events)[number]) => {
+    const Icon = typeIcons[event.type] ?? CalendarDays;
+    const color = typeColors[event.type] ?? "bg-emerald-700";
+    const eventProgress = Math.round((event.booked / event.capacity) * 100);
+
+    return (
+      <Card key={event.id} className="rounded-3xl border-2 border-stone-200 bg-white transition hover:-translate-y-0.5 hover:shadow-lg">
+        <CardContent className="p-6">
+          <div className="mb-5 flex items-start justify-between gap-4">
+            <div className="flex items-start gap-4">
+              <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl ${color} text-white`}>
+                <Icon className="h-6 w-6" />
+              </div>
+              <div>
+                <h3 className="text-lg font-black text-slate-950">{event.name}</h3>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-slate-500">
+                  {getStatusBadge(event.status)}
+                  <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{event.location}</span>
+                  <span className="flex items-center gap-1"><CalendarDays className="h-3.5 w-3.5" />{event.date}</span>
+                </div>
+              </div>
+            </div>
+            <Button variant="ghost" size="icon" className="rounded-full">
+              <MoreHorizontal className="h-5 w-5" />
+            </Button>
+          </div>
+
+          <div className="mb-5">
+            <div className="mb-2 flex justify-between text-sm">
+              <span className="font-medium text-slate-600">Tickets booked</span>
+              <span className="font-black text-slate-950">{event.booked}/{event.capacity}</span>
+            </div>
+            <Progress value={eventProgress} className="h-2" />
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            <div className="rounded-2xl bg-stone-100 p-3">
+              <p className="text-xs font-medium text-slate-500">Revenue</p>
+              <p className="mt-1 text-lg font-black text-slate-950">${event.revenue.toLocaleString()}</p>
+            </div>
+            <div className="rounded-2xl bg-stone-100 p-3">
+              <p className="text-xs font-medium text-slate-500">Waitlist</p>
+              <p className="mt-1 text-lg font-black text-slate-950">{event.waitlist}</p>
+            </div>
+            <div className="rounded-2xl bg-stone-100 p-3 md:col-span-2">
+              <p className="text-xs font-medium text-slate-500">Host property</p>
+              <p className="mt-1 truncate text-lg font-black text-slate-950">{event.host}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
   };
-
-  const strategyColors: Record<string, string> = {
-    "group-trip": "from-emerald-500 to-teal-600",
-    "first-trip": "from-orange-500 to-amber-600",
-    "event-based": "from-purple-500 to-indigo-600",
-    "campus": "from-blue-500 to-cyan-600",
-    "near-me": "from-rose-500 to-pink-600",
-    "no-gear": "from-green-500 to-emerald-600",
-    "matching": "from-violet-500 to-purple-600"
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "active":
-        return <Badge className="bg-emerald-100 text-emerald-800 hover:bg-emerald-200"><CheckCircle2 className="w-3 h-3 mr-1" />Active</Badge>;
-      case "paused":
-        return <Badge className="bg-amber-100 text-amber-800 hover:bg-amber-200"><Pause className="w-3 h-3 mr-1" />Paused</Badge>;
-      case "planned":
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-200"><Clock className="w-3 h-3 mr-1" />Planned</Badge>;
-      default:
-        return <Badge variant="outline">{status}</Badge>;
-    }
-  };
-
-  const totalMetrics = campaigns.reduce((acc, campaign) => ({
-    leads: acc.leads + campaign.metrics.leads,
-    conversions: acc.conversions + campaign.metrics.conversions,
-    revenue: acc.revenue + campaign.metrics.revenue,
-    target: acc.target + campaign.target
-  }), { leads: 0, conversions: 0, revenue: 0, target: 0 });
-
-  const overallProgress = Math.round((totalMetrics.conversions / totalMetrics.target) * 100);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-emerald-50/30 to-amber-50/30">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 sticky top-0 z-10">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-stone-50 text-slate-950">
+      <header className="sticky top-0 z-10 border-b border-stone-200 bg-stone-50/95 backdrop-blur">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-700 text-white">
+              <Flame className="h-5 w-5" />
+            </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Campaign Dashboard</h1>
-              <p className="text-gray-600 text-sm">Track and manage growth initiatives</p>
+              <h1 className="text-2xl font-black tracking-tight">Hip Events Dashboard</h1>
+              <p className="text-sm text-slate-500">Track ticket sales, host revenue, and event demand</p>
             </div>
-            <div className="flex gap-3">
-              <Link to="/">
-                <Button variant="outline" size="sm">
-                  <Home className="w-4 h-4 mr-2" />
-                  Home
-                </Button>
-              </Link>
-              <Button className="bg-emerald-600 hover:bg-emerald-700">
-                <Play className="w-4 h-4 mr-2" />
-                New Campaign
+          </div>
+          <div className="flex gap-2 sm:gap-3">
+            <Link to="/">
+              <Button variant="outline" size="sm" className="rounded-full bg-white">
+                <Home className="mr-2 h-4 w-4" />
+                Home
               </Button>
-            </div>
+            </Link>
+            <Link to="/host-event">
+              <Button size="sm" className="rounded-full bg-emerald-700 text-white hover:bg-emerald-800">
+                <Plus className="mr-2 h-4 w-4" />
+                New event
+              </Button>
+            </Link>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8">
-        {/* Overview Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="border-2 border-emerald-200">
+      <main className="container mx-auto px-4 py-8">
+        <div className="mb-8 grid gap-5 md:grid-cols-4">
+          <Card className="rounded-3xl border-2 border-emerald-200 bg-white">
             <CardHeader className="pb-3">
-              <CardDescription>Total Leads</CardDescription>
-              <CardTitle className="text-3xl">{totalMetrics.leads.toLocaleString()}</CardTitle>
+              <CardDescription>Tickets booked</CardDescription>
+              <CardTitle className="text-3xl font-black">{totalBooked}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-emerald-600 text-sm">
-                <ArrowUpRight className="w-4 h-4 mr-1" />
-                <span>+234 this week</span>
-              </div>
+            <CardContent className="flex items-center text-sm font-medium text-emerald-700">
+              <ArrowUpRight className="mr-1 h-4 w-4" />
+              +31 this week
             </CardContent>
           </Card>
-
-          <Card className="border-2 border-blue-200">
+          <Card className="rounded-3xl border-2 border-amber-200 bg-white">
             <CardHeader className="pb-3">
-              <CardDescription>Conversions</CardDescription>
-              <CardTitle className="text-3xl">{totalMetrics.conversions.toLocaleString()}</CardTitle>
+              <CardDescription>Event revenue</CardDescription>
+              <CardTitle className="text-3xl font-black">${totalRevenue.toLocaleString()}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-blue-600 text-sm">
-                <ArrowUpRight className="w-4 h-4 mr-1" />
-                <span>+89 this week</span>
-              </div>
+            <CardContent className="flex items-center text-sm font-medium text-amber-700">
+              <ArrowUpRight className="mr-1 h-4 w-4" />
+              +$2.6k this week
             </CardContent>
           </Card>
-
-          <Card className="border-2 border-purple-200">
+          <Card className="rounded-3xl border-2 border-indigo-200 bg-white">
             <CardHeader className="pb-3">
-              <CardDescription>Revenue</CardDescription>
-              <CardTitle className="text-3xl">${totalMetrics.revenue.toLocaleString()}</CardTitle>
+              <CardDescription>Waitlist demand</CardDescription>
+              <CardTitle className="text-3xl font-black">{totalWaitlist}</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="flex items-center text-purple-600 text-sm">
-                <ArrowUpRight className="w-4 h-4 mr-1" />
-                <span>+$12,400 this week</span>
-              </div>
-            </CardContent>
+            <CardContent className="text-sm font-medium text-indigo-700">Signals expansion opportunities</CardContent>
           </Card>
-
-          <Card className="border-2 border-amber-200">
+          <Card className="rounded-3xl border-2 border-teal-200 bg-white">
             <CardHeader className="pb-3">
-              <CardDescription>Overall Progress</CardDescription>
-              <CardTitle className="text-3xl">{overallProgress}%</CardTitle>
+              <CardDescription>Sell-through</CardDescription>
+              <CardTitle className="text-3xl font-black">{sellThrough}%</CardTitle>
             </CardHeader>
             <CardContent>
-              <Progress value={overallProgress} className="h-2" />
-              <p className="text-xs text-gray-500 mt-2">{totalMetrics.conversions} / {totalMetrics.target} target</p>
+              <Progress value={sellThrough} className="h-2" />
+              <p className="mt-2 text-xs text-slate-500">{totalBooked} of {totalCapacity} tickets</p>
             </CardContent>
           </Card>
         </div>
 
-        {/* Campaign List */}
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mb-6">
-            <TabsTrigger value="all">All Campaigns</TabsTrigger>
-            <TabsTrigger value="active">Active</TabsTrigger>
-            <TabsTrigger value="paused">Paused</TabsTrigger>
-            <TabsTrigger value="planned">Planned</TabsTrigger>
+          <TabsList className="mb-6 rounded-2xl bg-stone-200 p-1">
+            <TabsTrigger value="all" className="rounded-xl">All events</TabsTrigger>
+            <TabsTrigger value="live" className="rounded-xl">Live</TabsTrigger>
+            <TabsTrigger value="sold-out" className="rounded-xl">Sold out</TabsTrigger>
+            <TabsTrigger value="draft" className="rounded-xl">Drafts</TabsTrigger>
           </TabsList>
 
           <TabsContent value="all" className="space-y-4">
-            {campaigns.map((campaign) => {
-              const Icon = strategyIcons[campaign.strategy];
-              return (
-                <Card key={campaign.id} className="border-2 hover:shadow-lg transition-shadow">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${strategyColors[campaign.strategy]} flex items-center justify-center flex-shrink-0`}>
-                          <Icon className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-lg text-gray-900">{campaign.name}</h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            {getStatusBadge(campaign.status)}
-                            <span className="text-sm text-gray-500">
-                              {campaign.startDate} - {campaign.endDate}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <Button variant="ghost" size="icon">
-                        <MoreHorizontal className="w-5 h-5" />
-                      </Button>
-                    </div>
-
-                    <div className="mb-4">
-                      <div className="flex justify-between text-sm mb-2">
-                        <span className="text-gray-600">Progress</span>
-                        <span className="font-medium">{campaign.progress}%</span>
-                      </div>
-                      <Progress value={campaign.progress} className="h-2" />
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-500 mb-1">Leads</p>
-                        <p className="font-semibold text-lg">{campaign.metrics.leads.toLocaleString()}</p>
-                      </div>
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-500 mb-1">Conversions</p>
-                        <p className="font-semibold text-lg">{campaign.metrics.conversions.toLocaleString()}</p>
-                      </div>
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-500 mb-1">Revenue</p>
-                        <p className="font-semibold text-lg">${campaign.metrics.revenue.toLocaleString()}</p>
-                      </div>
-                      <div className="bg-gray-50 rounded-lg p-3">
-                        <p className="text-xs text-gray-500 mb-1">CAC</p>
-                        <p className="font-semibold text-lg">${campaign.metrics.cac}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+            {events.map(renderEventCard)}
           </TabsContent>
-
-          <TabsContent value="active">
-            {campaigns.filter(c => c.status === "active").map((campaign) => {
-              const Icon = strategyIcons[campaign.strategy];
-              return (
-                <Card key={campaign.id} className="border-2 border-emerald-200 mb-4">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-start gap-4">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${strategyColors[campaign.strategy]} flex items-center justify-center flex-shrink-0`}>
-                          <Icon className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-lg text-gray-900">{campaign.name}</h3>
-                          {getStatusBadge(campaign.status)}
-                        </div>
-                      </div>
-                    </div>
-                    <Progress value={campaign.progress} className="h-2 mb-2" />
-                    <p className="text-sm text-gray-500">{campaign.metrics.conversions} / {campaign.target} conversions</p>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <TabsContent value="live" className="space-y-4">
+            {liveEvents.map(renderEventCard)}
           </TabsContent>
-
-          <TabsContent value="paused">
-            {campaigns.filter(c => c.status === "paused").map((campaign) => {
-              const Icon = strategyIcons[campaign.strategy];
-              return (
-                <Card key={campaign.id} className="border-2 border-amber-200 mb-4">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${strategyColors[campaign.strategy]} flex items-center justify-center flex-shrink-0`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg text-gray-900">{campaign.name}</h3>
-                        {getStatusBadge(campaign.status)}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <TabsContent value="sold-out" className="space-y-4">
+            {events.filter((event) => event.status === "sold-out").map(renderEventCard)}
           </TabsContent>
-
-          <TabsContent value="planned">
-            {campaigns.filter(c => c.status === "planned").map((campaign) => {
-              const Icon = strategyIcons[campaign.strategy];
-              return (
-                <Card key={campaign.id} className="border-2 border-blue-200 mb-4">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${strategyColors[campaign.strategy]} flex items-center justify-center flex-shrink-0`}>
-                        <Icon className="w-6 h-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="font-semibold text-lg text-gray-900">{campaign.name}</h3>
-                        {getStatusBadge(campaign.status)}
-                        <p className="text-sm text-gray-500 mt-1">Starts: {campaign.startDate}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <TabsContent value="draft" className="space-y-4">
+            {events.filter((event) => event.status === "draft").map(renderEventCard)}
           </TabsContent>
         </Tabs>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default CampaignDashboard;
+export default EventDashboard;

@@ -1,102 +1,78 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { 
-  Users, 
-  Calendar, 
-  MapPin, 
-  DollarSign, 
-  Plus,
-  Send,
+import { Textarea } from "@/components/ui/textarea";
+import {
   CheckCircle2,
-  Clock,
-  Star,
-  Share2,
   Copy,
+  DollarSign,
+  Flame,
+  Home,
   Mail,
-  Phone,
-  Home
+  MapPin,
+  Send,
+  Sparkles,
+  Star,
 } from "lucide-react";
-import { Link } from "react-router-dom";
 
-const GroupTripPlanner = () => {
-  const [step, setStep] = useState(1);
-  const [tripData, setTripData] = useState({
-    destination: "",
-    dates: { start: "", end: "" },
-    groupSize: 8,
-    budget: 500,
-    description: "",
-    invitees: [
-      { name: "Sarah Johnson", email: "sarah@email.com", status: "accepted" },
-      { name: "Mike Chen", email: "mike@email.com", status: "pending" },
-      { name: "Emma Davis", email: "emma@email.com", status: "pending" }
-    ]
-  });
-
-  const [selectedSite, setSelectedSite] = useState({
+const hostSites = [
+  {
     name: "Redwood Grove Campground",
     location: "Big Sur, CA",
-    price: 85,
+    fit: "Farm dinners, stargazing, guided hikes",
+    baseFee: 450,
     rating: 4.8,
-    image: "/api/placeholder/400/300",
-    amenities: ["Fire pit", "Picnic table", "Restrooms", "Water access"]
+    capacity: 48,
+    amenities: ["Fire pit", "Picnic tables", "Restrooms", "Dark sky"],
+  },
+  {
+    name: "Lavender Hill Farm",
+    location: "Petaluma, CA",
+    fit: "Yoga, sound baths, creative workshops",
+    baseFee: 300,
+    rating: 4.9,
+    capacity: 28,
+    amenities: ["Barn", "Meadow", "Parking", "Water"],
+  },
+  {
+    name: "Juniper Ridge Ranch",
+    location: "Bend, OR",
+    fit: "Trail runs, clinics, micro-festivals",
+    baseFee: 650,
+    rating: 4.7,
+    capacity: 80,
+    amenities: ["Trail access", "Group area", "Showers", "Cabins"],
+  },
+];
+
+const partners = [
+  { name: "REI Co-op", email: "events@rei.example", status: "interested" },
+  { name: "Local Trail Club", email: "lead@trailclub.example", status: "confirmed" },
+  { name: "Campfire Chef Collective", email: "hello@campchef.example", status: "pending" },
+];
+
+const EventBuilder = () => {
+  const [step, setStep] = useState(1);
+  const [eventData, setEventData] = useState({
+    title: "Redwood Supper & Stargazing",
+    category: "farm-table",
+    date: "",
+    time: "18:00",
+    capacity: 40,
+    ticketPrice: 95,
+    description: "A campfire dinner followed by a naturalist-led night walk under the redwoods.",
   });
+  const [selectedSite, setSelectedSite] = useState(hostSites[0]);
 
-  const popularSites = [
-    {
-      name: "Redwood Grove Campground",
-      location: "Big Sur, CA",
-      price: 85,
-      rating: 4.8,
-      image: "/api/placeholder/400/300",
-      amenities: ["Fire pit", "Picnic table", "Restrooms", "Water access"]
-    },
-    {
-      name: "Mountain View Retreat",
-      location: "Yosemite, CA",
-      price: 120,
-      rating: 4.9,
-      image: "/api/placeholder/400/300",
-      amenities: ["Hot tub", "Kitchen", "WiFi", "Hiking trails"]
-    },
-    {
-      name: "Lakeside Paradise",
-      location: "Lake Tahoe, CA",
-      price: 95,
-      rating: 4.7,
-      image: "/api/placeholder/400/300",
-      amenities: ["Lake access", "Boat rental", "Fishing", "Beach"]
-    }
-  ];
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "accepted":
-        return <CheckCircle2 className="w-4 h-4 text-emerald-600" />;
-      case "pending":
-        return <Clock className="w-4 h-4 text-amber-600" />;
-      default:
-        return <Clock className="w-4 h-4 text-gray-400" />;
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "accepted":
-        return <Badge className="bg-emerald-100 text-emerald-800">Accepted</Badge>;
-      case "pending":
-        return <Badge className="bg-amber-100 text-amber-800">Pending</Badge>;
-      default:
-        return <Badge variant="outline">Invited</Badge>;
-    }
-  };
+  const grossRevenue = eventData.capacity * eventData.ticketPrice;
+  const hostFee = selectedSite.baseFee;
+  const estimatedMargin = grossRevenue - hostFee;
 
   const handleNextStep = () => {
     if (step < 4) setStep(step + 1);
@@ -106,413 +82,317 @@ const GroupTripPlanner = () => {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleAddInvitee = () => {
-    const newInvitee = {
-      name: "New Friend",
-      email: "friend@email.com",
-      status: "pending"
-    };
-    setTripData({
-      ...tripData,
-      invitees: [...tripData.invitees, newInvitee]
-    });
+  const handleShareEvent = () => {
+    const shareUrl = `https://hipcamp.com/events/${Date.now()}`;
+    navigator.clipboard.writeText(shareUrl);
+    alert("Event preview link copied to clipboard!");
   };
 
-  const handleShareTrip = () => {
-    const shareUrl = `https://hipcamp.com/group-trip/${Date.now()}`;
-    navigator.clipboard.writeText(shareUrl);
-    alert("Trip link copied to clipboard!");
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "confirmed":
+        return <Badge className="rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">Confirmed</Badge>;
+      case "interested":
+        return <Badge className="rounded-full bg-blue-100 text-blue-900 hover:bg-blue-100">Interested</Badge>;
+      default:
+        return <Badge className="rounded-full bg-amber-100 text-amber-900 hover:bg-amber-100">Pending</Badge>;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-emerald-50/30 to-amber-50/30">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
-                          <Users className="w-6 h-6 text-white" />
-                        </div>
-                        <div>
-                          <h1 className="text-2xl font-bold text-gray-900">Group Trip Planner</h1>
-                          <p className="text-gray-600">Organize your next outdoor adventure</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Badge className="bg-emerald-100 text-emerald-800">
-                          <CheckCircle2 className="w-3 h-3 mr-1" />
-                          Beta
-                        </Badge>
-                        <Link to="/">
-                          <Button variant="outline" size="sm">
-                            <Home className="w-4 h-4 mr-2" />
-                            Home
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
+    <div className="min-h-screen bg-stone-50 text-slate-950">
+      <header className="border-b border-stone-200 bg-stone-50/95 backdrop-blur">
+        <div className="container mx-auto flex items-center justify-between px-4 py-5">
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-700 text-white">
+              <Flame className="h-6 w-6" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-black tracking-tight">Host a Hip Event</h1>
+              <p className="text-sm text-slate-500">Create an outdoor experience listing for Hipcamp</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <Badge className="hidden rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100 sm:inline-flex">
+              <Sparkles className="mr-1 h-3 w-3" />
+              Event builder
+            </Badge>
+            <Link to="/">
+              <Button variant="outline" size="sm" className="rounded-full bg-white">
+                <Home className="mr-2 h-4 w-4" />
+                Home
+              </Button>
+            </Link>
+          </div>
         </div>
       </header>
 
-      {/* Progress Steps */}
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-12">
-            {[1, 2, 3, 4].map((stepNum) => (
-              <div key={stepNum} className="flex items-center">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
-                  step >= stepNum 
-                    ? 'bg-emerald-600 text-white' 
-                    : 'bg-gray-200 text-gray-500'
-                }`}>
-                  {stepNum}
+      <main className="container mx-auto px-4 py-8">
+        <div className="mx-auto max-w-5xl">
+          <div className="mb-10 grid grid-cols-4 gap-2 sm:gap-4">
+            {["Basics", "Site", "Tickets", "Publish"].map((label, index) => {
+              const stepNumber = index + 1;
+              const isActive = step >= stepNumber;
+              return (
+                <div key={label} className="flex items-center gap-2">
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-black ${isActive ? "bg-emerald-700 text-white" : "bg-stone-200 text-slate-500"}`}>
+                    {stepNumber}
+                  </div>
+                  <span className={`hidden text-sm font-bold sm:inline ${isActive ? "text-slate-950" : "text-slate-400"}`}>{label}</span>
                 </div>
-                {stepNum < 4 && (
-                  <div className={`w-24 h-1 mx-2 ${
-                    step > stepNum ? 'bg-emerald-600' : 'bg-gray-200'
-                  }`} />
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Step Content */}
-          <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-100 overflow-hidden">
+          <Card className="overflow-hidden rounded-[2rem] border-2 border-stone-200 bg-white shadow-xl">
             {step === 1 && (
-              <div className="p-8">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Plan Your Group Trip</h2>
-                  <p className="text-gray-600 text-lg">Start by selecting your destination and dates</p>
+              <CardContent className="p-6 md:p-8">
+                <div className="mb-8 text-center">
+                  <Badge className="mb-4 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">Step 1</Badge>
+                  <h2 className="text-3xl font-black tracking-tight">Shape the experience</h2>
+                  <p className="mt-3 text-lg text-slate-600">Define what guests will do, when it happens, and why it is worth booking.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="space-y-4">
-                    <Label htmlFor="destination">Where do you want to go?</Label>
-                    <Select value={tripData.destination} onValueChange={(value) => setTripData({...tripData, destination: value})}>
-                      <SelectTrigger id="destination">
-                        <MapPin className="w-4 h-4 mr-2" />
-                        <SelectValue placeholder="Choose a destination" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="big-sur">Big Sur, CA</SelectItem>
-                        <SelectItem value="yosemite">Yosemite, CA</SelectItem>
-                        <SelectItem value="tahoe">Lake Tahoe, CA</SelectItem>
-                        <SelectItem value="joshua-tree">Joshua Tree, CA</SelectItem>
-                        <SelectItem value="oregon">Oregon Coast</SelectItem>
-                      </SelectContent>
-                    </Select>
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="space-y-3 md:col-span-2">
+                    <Label htmlFor="title">Event title</Label>
+                    <Input
+                      id="title"
+                      value={eventData.title}
+                      onChange={(event) => setEventData({ ...eventData, title: event.target.value })}
+                      className="h-12 rounded-2xl"
+                    />
                   </div>
-
-                  <div className="space-y-4">
-                    <Label htmlFor="group-size">Group Size</Label>
-                    <Select value={tripData.groupSize.toString()} onValueChange={(value) => setTripData({...tripData, groupSize: parseInt(value)})}>
-                      <SelectTrigger id="group-size">
-                        <Users className="w-4 h-4 mr-2" />
+                  <div className="space-y-3">
+                    <Label htmlFor="category">Experience category</Label>
+                    <Select value={eventData.category} onValueChange={(value) => setEventData({ ...eventData, category: value })}>
+                      <SelectTrigger id="category" className="h-12 rounded-2xl">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="4">4 people</SelectItem>
-                        <SelectItem value="6">6 people</SelectItem>
-                        <SelectItem value="8">8 people</SelectItem>
-                        <SelectItem value="10">10 people</SelectItem>
-                        <SelectItem value="12">12+ people</SelectItem>
+                        <SelectItem value="farm-table">Farm-to-campfire dinner</SelectItem>
+                        <SelectItem value="guided-adventure">Guided adventure</SelectItem>
+                        <SelectItem value="stargazing">Stargazing & nature night</SelectItem>
+                        <SelectItem value="wellness">Wellness retreat</SelectItem>
+                        <SelectItem value="workshop">Outdoor skill workshop</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="space-y-4">
-                    <Label htmlFor="start-date">Start Date</Label>
-                    <Input 
-                      id="start-date" 
-                      type="date" 
-                      value={tripData.dates.start}
-                      onChange={(e) => setTripData({...tripData, dates: {...tripData.dates, start: e.target.value}})}
+                  <div className="space-y-3">
+                    <Label htmlFor="capacity">Guest capacity</Label>
+                    <Input
+                      id="capacity"
+                      type="number"
+                      value={eventData.capacity}
+                      onChange={(event) => setEventData({ ...eventData, capacity: Number(event.target.value) })}
+                      className="h-12 rounded-2xl"
                     />
                   </div>
-                  <div className="space-y-4">
-                    <Label htmlFor="end-date">End Date</Label>
-                    <Input 
-                      id="end-date" 
-                      type="date" 
-                      value={tripData.dates.end}
-                      onChange={(e) => setTripData({...tripData, dates: {...tripData.dates, end: e.target.value}})}
+                  <div className="space-y-3">
+                    <Label htmlFor="date">Date</Label>
+                    <Input
+                      id="date"
+                      type="date"
+                      value={eventData.date}
+                      onChange={(event) => setEventData({ ...eventData, date: event.target.value })}
+                      className="h-12 rounded-2xl"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Label htmlFor="time">Start time</Label>
+                    <Input
+                      id="time"
+                      type="time"
+                      value={eventData.time}
+                      onChange={(event) => setEventData({ ...eventData, time: event.target.value })}
+                      className="h-12 rounded-2xl"
+                    />
+                  </div>
+                  <div className="space-y-3 md:col-span-2">
+                    <Label htmlFor="description">Guest-facing description</Label>
+                    <Textarea
+                      id="description"
+                      value={eventData.description}
+                      onChange={(event) => setEventData({ ...eventData, description: event.target.value })}
+                      rows={4}
+                      className="rounded-2xl"
                     />
                   </div>
                 </div>
-
-                <div className="space-y-4 mb-8">
-                  <Label htmlFor="budget">Budget per person</Label>
-                  <div className="flex items-center gap-4">
-                    <DollarSign className="w-5 h-5 text-gray-400" />
-                    <Input 
-                      id="budget" 
-                      type="number" 
-                      value={tripData.budget}
-                      onChange={(e) => setTripData({...tripData, budget: parseInt(e.target.value)})}
-                      className="max-w-xs"
-                    />
-                    <span className="text-gray-600">per person</span>
-                  </div>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  <Label htmlFor="description">Trip Description</Label>
-                  <Textarea 
-                    id="description"
-                    placeholder="What's the occasion? Weekend getaway, birthday celebration, trail running retreat..."
-                    value={tripData.description}
-                    onChange={(e) => setTripData({...tripData, description: e.target.value})}
-                    rows={3}
-                  />
-                </div>
-              </div>
+              </CardContent>
             )}
 
             {step === 2 && (
-              <div className="p-8">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Choose Your Site</h2>
-                  <p className="text-gray-600 text-lg">Select the perfect spot for your group</p>
+              <CardContent className="p-6 md:p-8">
+                <div className="mb-8 text-center">
+                  <Badge className="mb-4 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">Step 2</Badge>
+                  <h2 className="text-3xl font-black tracking-tight">Choose an event-ready Hipcamp</h2>
+                  <p className="mt-3 text-lg text-slate-600">Match the experience with a host property that can support the format.</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                  {popularSites.map((site, index) => (
-                    <Card 
-                      key={index} 
-                      className={`cursor-pointer transition-all hover:shadow-lg ${
-                        selectedSite.name === site.name ? 'border-2 border-emerald-500 ring-4 ring-emerald-500/20' : 'border border-gray-200'
-                      }`}
+                <div className="grid gap-5 md:grid-cols-3">
+                  {hostSites.map((site) => (
+                    <Card
+                      key={site.name}
                       onClick={() => setSelectedSite(site)}
+                      className={`cursor-pointer rounded-3xl transition hover:-translate-y-1 hover:shadow-lg ${selectedSite.name === site.name ? "border-2 border-emerald-600" : "border border-stone-200"}`}
                     >
-                      <CardHeader className="pb-3">
-                        <div className="w-full h-32 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-lg mb-3" />
-                        <CardTitle className="text-lg">{site.name}</CardTitle>
-                        <CardDescription className="flex items-center">
-                          <MapPin className="w-4 h-4 mr-1" />
-                          {site.location}
-                        </CardDescription>
+                      <CardHeader>
+                        <div className="mb-3 flex h-32 items-end rounded-3xl bg-emerald-900 p-4 text-white">
+                          <MapPin className="mr-2 h-5 w-5" />
+                          <span className="text-sm font-bold">{site.location}</span>
+                        </div>
+                        <CardTitle className="text-lg font-black">{site.name}</CardTitle>
+                        <CardDescription>{site.fit}</CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex items-center justify-between mb-3">
-                          <div className="flex items-center">
-                            <Star className="w-4 h-4 text-amber-500 mr-1" />
-                            <span className="font-medium">{site.rating}</span>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-2xl font-bold text-emerald-600">${site.price}</p>
-                            <p className="text-xs text-gray-500">per night</p>
-                          </div>
+                        <div className="mb-4 flex items-center justify-between">
+                          <span className="flex items-center text-sm font-bold text-amber-600"><Star className="mr-1 h-4 w-4" />{site.rating}</span>
+                          <span className="text-sm text-slate-500">Up to {site.capacity} guests</span>
                         </div>
-                        <div className="flex flex-wrap gap-1">
-                          {site.amenities.slice(0, 3).map((amenity, i) => (
-                            <Badge key={i} variant="secondary" className="text-xs">
-                              {amenity}
-                            </Badge>
+                        <div className="flex flex-wrap gap-2">
+                          {site.amenities.slice(0, 3).map((amenity) => (
+                            <Badge key={amenity} variant="secondary" className="rounded-full">{amenity}</Badge>
                           ))}
                         </div>
                       </CardContent>
                     </Card>
                   ))}
                 </div>
+              </CardContent>
+            )}
 
-                {selectedSite && (
-                  <Card className="border-2 border-emerald-200 bg-emerald-50/30">
-                    <CardContent className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <div>
-                          <h3 className="text-xl font-semibold text-gray-900">{selectedSite.name}</h3>
-                          <p className="text-gray-600 flex items-center">
-                            <MapPin className="w-4 h-4 mr-1" />
-                            {selectedSite.location}
-                          </p>
-                        </div>
-                        <Badge className="bg-emerald-100 text-emerald-800">
-                          Selected
-                        </Badge>
+            {step === 3 && (
+              <CardContent className="p-6 md:p-8">
+                <div className="mb-8 text-center">
+                  <Badge className="mb-4 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">Step 3</Badge>
+                  <h2 className="text-3xl font-black tracking-tight">Set tickets and partners</h2>
+                  <p className="mt-3 text-lg text-slate-600">Price the event, estimate host revenue, and coordinate partner distribution.</p>
+                </div>
+
+                <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+                  <Card className="rounded-3xl border-2 border-emerald-200 bg-emerald-50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center text-xl font-black"><DollarSign className="mr-2 h-5 w-5" />Ticket economics</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-5">
+                      <div className="space-y-3">
+                        <Label htmlFor="ticketPrice">Ticket price</Label>
+                        <Input
+                          id="ticketPrice"
+                          type="number"
+                          value={eventData.ticketPrice}
+                          onChange={(event) => setEventData({ ...eventData, ticketPrice: Number(event.target.value) })}
+                          className="h-12 rounded-2xl bg-white"
+                        />
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm text-gray-500 mb-1">Total Cost</p>
-                          <p className="text-2xl font-bold text-emerald-600">
-                            ${selectedSite.price * tripData.groupSize}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            ${selectedSite.price} × {tripData.groupSize} people
-                          </p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="rounded-2xl bg-white p-4">
+                          <p className="text-xs font-medium text-slate-500">Gross revenue</p>
+                          <p className="mt-1 text-2xl font-black text-slate-950">${grossRevenue.toLocaleString()}</p>
                         </div>
-                        <div>
-                          <p className="text-sm text-gray-500 mb-1">Per Person</p>
-                          <p className="text-2xl font-bold text-gray-900">
-                            ${selectedSite.price}
-                          </p>
-                          <p className="text-xs text-gray-500">per night</p>
+                        <div className="rounded-2xl bg-white p-4">
+                          <p className="text-xs font-medium text-slate-500">Host/site fee</p>
+                          <p className="mt-1 text-2xl font-black text-slate-950">${hostFee.toLocaleString()}</p>
+                        </div>
+                        <div className="col-span-2 rounded-2xl bg-emerald-700 p-4 text-white">
+                          <p className="text-xs font-medium text-emerald-100">Estimated margin before staffing</p>
+                          <p className="mt-1 text-3xl font-black">${estimatedMargin.toLocaleString()}</p>
                         </div>
                       </div>
                     </CardContent>
                   </Card>
-                )}
-              </div>
-            )}
 
-            {step === 3 && (
-              <div className="p-8">
-                <div className="text-center mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 mb-4">Invite Your Group</h2>
-                  <p className="text-gray-600 text-lg">Add friends and split the cost</p>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center justify-between">
-                    <Label>Group Members</Label>
-                    <Button variant="outline" size="sm" onClick={handleAddInvitee}>
-                      <Plus className="w-4 h-4 mr-1" />
-                      Add Person
-                    </Button>
-                  </div>
-
-                  {tripData.invitees.map((invitee, index) => (
-                    <Card key={index} className="border border-gray-200">
-                      <CardContent className="p-4">
-                        <div className="flex items-center justify-between">
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <Label>Partner distribution</Label>
+                      <Badge className="rounded-full bg-amber-100 text-amber-900 hover:bg-amber-100">3 partners</Badge>
+                    </div>
+                    {partners.map((partner) => (
+                      <Card key={partner.name} className="rounded-3xl border border-stone-200">
+                        <CardContent className="flex items-center justify-between p-4">
                           <div className="flex items-center gap-3">
                             <Avatar>
-                              <AvatarFallback>
-                                {invitee.name.split(' ').map(n => n[0]).join('')}
-                              </AvatarFallback>
+                              <AvatarFallback>{partner.name.split(" ").map((word) => word[0]).join("").slice(0, 2)}</AvatarFallback>
                             </Avatar>
                             <div>
-                              <p className="font-medium text-gray-900">{invitee.name}</p>
-                              <p className="text-sm text-gray-500">{invitee.email}</p>
+                              <p className="font-black text-slate-950">{partner.name}</p>
+                              <p className="text-sm text-slate-500">{partner.email}</p>
                             </div>
                           </div>
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(invitee.status)}
-                            {getStatusBadge(invitee.status)}
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                          {getStatusBadge(partner.status)}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-
-                <Card className="border-2 border-emerald-200 bg-emerald-50/30">
-                  <CardContent className="p-6">
-                    <h3 className="font-semibold text-lg text-gray-900 mb-4">Payment Split</h3>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Total Cost</span>
-                        <span className="font-semibold">${selectedSite.price * tripData.groupSize}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Per Person</span>
-                        <span className="font-semibold text-emerald-600">${selectedSite.price}</span>
-                      </div>
-                      <div className="border-t pt-3">
-                        <div className="flex justify-between items-center">
-                          <span className="font-medium">Your Share</span>
-                          <span className="font-bold text-lg text-emerald-600">${selectedSite.price}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-
-                <div className="flex gap-4 mt-6">
-                  <Button variant="outline" className="flex-1" onClick={handleShareTrip}>
-                    <Share2 className="w-4 h-4 mr-2" />
-                    Share Trip Link
-                  </Button>
-                  <Button variant="outline" className="flex-1">
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy Details
-                  </Button>
-                </div>
-              </div>
+              </CardContent>
             )}
 
             {step === 4 && (
-              <div className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle2 className="w-8 h-8 text-white" />
+              <CardContent className="p-6 text-center md:p-10">
+                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-700 text-white">
+                  <CheckCircle2 className="h-8 w-8" />
                 </div>
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">Trip Created!</h2>
-                <p className="text-gray-600 text-lg mb-8">
-                  Your group trip is ready. Invitations have been sent and everyone can now book their spot.
+                <h2 className="text-3xl font-black tracking-tight">Event listing ready to publish</h2>
+                <p className="mx-auto mt-3 max-w-2xl text-lg leading-8 text-slate-600">
+                  Your Hip Event has the core pieces: guest promise, event-ready host property, tickets, and partner distribution.
                 </p>
 
-                <Card className="border-2 border-emerald-200 bg-emerald-50/30 mb-8">
-                  <CardContent className="p-6">
-                    <h3 className="font-semibold text-lg text-gray-900 mb-4">Trip Summary</h3>
-                    <div className="space-y-3 text-left">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Destination:</span>
-                        <span className="font-medium">{selectedSite.name}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Dates:</span>
-                        <span className="font-medium">{tripData.dates.start} - {tripData.dates.end}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Group Size:</span>
-                        <span className="font-medium">{tripData.groupSize} people</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Total Cost:</span>
-                        <span className="font-bold text-emerald-600">${selectedSite.price * tripData.groupSize}</span>
-                      </div>
+                <Card className="mx-auto my-8 max-w-2xl rounded-3xl border-2 border-emerald-200 bg-emerald-50 text-left">
+                  <CardContent className="space-y-4 p-6">
+                    <div className="flex justify-between gap-4">
+                      <span className="text-slate-600">Event</span>
+                      <span className="font-black text-slate-950">{eventData.title}</span>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <span className="text-slate-600">Host site</span>
+                      <span className="font-black text-slate-950">{selectedSite.name}</span>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <span className="text-slate-600">Capacity</span>
+                      <span className="font-black text-slate-950">{eventData.capacity} guests</span>
+                    </div>
+                    <div className="flex justify-between gap-4">
+                      <span className="text-slate-600">Ticket price</span>
+                      <span className="font-black text-emerald-700">${eventData.ticketPrice}</span>
                     </div>
                   </CardContent>
                 </Card>
 
-                <div className="flex gap-4 justify-center">
-                  <Button className="bg-emerald-600 hover:bg-emerald-700">
-                    <Calendar className="w-4 h-4 mr-2" />
-                    Add to Calendar
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800" onClick={handleShareEvent}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy preview link
                   </Button>
-                  <Button variant="outline">
-                    <Mail className="w-4 h-4 mr-2" />
-                    Send Reminders
+                  <Button variant="outline" className="rounded-full bg-white px-6">
+                    <Mail className="mr-2 h-4 w-4" />
+                    Send to partners
                   </Button>
                 </div>
-              </div>
+              </CardContent>
             )}
 
-            {/* Navigation */}
-            <div className="flex justify-between p-8 border-t border-gray-200">
-              <Button 
-                variant="outline" 
-                onClick={handlePrevStep}
-                disabled={step === 1}
-                className="rounded-full px-6"
-              >
+            <div className="flex justify-between border-t border-stone-200 p-6 md:p-8">
+              <Button variant="outline" onClick={handlePrevStep} disabled={step === 1} className="rounded-full bg-white px-6">
                 Previous
               </Button>
-              
               {step < 4 ? (
-                <Button 
-                  onClick={handleNextStep}
-                  className="bg-emerald-600 hover:bg-emerald-700 rounded-full px-6"
-                >
-                  {step === 3 ? <Send className="w-4 h-4 mr-2" /> : null}
-                  {step === 3 ? "Send Invitations" : "Next Step"}
+                <Button onClick={handleNextStep} className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800">
+                  {step === 3 && <Send className="mr-2 h-4 w-4" />}
+                  {step === 3 ? "Prepare publish" : "Next step"}
                 </Button>
               ) : (
-                <Button 
-                  onClick={() => setStep(1)}
-                  className="bg-emerald-600 hover:bg-emerald-700 rounded-full px-6"
-                >
-                  Plan Another Trip
+                <Button onClick={() => setStep(1)} className="rounded-full bg-emerald-700 px-6 text-white hover:bg-emerald-800">
+                  Create another event
                 </Button>
               )}
             </div>
-          </div>
+          </Card>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
 
-export default GroupTripPlanner;
+export default EventBuilder;

@@ -4,399 +4,322 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { 
-  Users, 
-  Gift, 
-  Calendar, 
-  GraduationCap, 
-  MapPin, 
-  Tent, 
+import {
   ArrowRight,
-  Sparkles,
-  TrendingUp,
-  Target,
+  CalendarDays,
   CheckCircle2,
   Flame,
-  LayoutDashboard
+  LayoutDashboard,
+  MapPin,
+  MoonStar,
+  Mountain,
+  Sparkles,
+  Sprout,
+  Ticket,
+  Users,
+  Utensils,
+  Waves,
 } from "lucide-react";
 
-const Index = () => {
-  const [activeStrategy, setActiveStrategy] = useState<string>("group-trip");
+const eventTypes = [
+  {
+    id: "guided-adventures",
+    icon: Mountain,
+    title: "Guided outdoor adventures",
+    subtitle: "Hikes, trail runs, climbing clinics, paddles",
+    audience: "Outdoor clubs, local guides, brand communities",
+    hostValue: "Turn existing land access and expertise into ticketed experiences that also drive overnight stays.",
+    guestValue: "A clear reason to go outside with a host, a route, and a group already built in.",
+    launchPlay: "Start with REI-style skill clinics and trail running community weekends near high-demand metros.",
+    color: "bg-emerald-600",
+  },
+  {
+    id: "farm-table",
+    icon: Utensils,
+    title: "Farm-to-campfire dinners",
+    subtitle: "Outdoor meals, tastings, chef pop-ups",
+    audience: "Farms, wineries, chefs, food creators",
+    hostValue: "Let scenic hosts monetize one-night gatherings without needing to become full-service venues.",
+    guestValue: "A memorable dinner in a place people could never book through a restaurant marketplace.",
+    launchPlay: "Curate 20 host properties within 90 minutes of major cities and package dinner + optional stay.",
+    color: "bg-amber-600",
+  },
+  {
+    id: "stargazing",
+    icon: MoonStar,
+    title: "Stargazing & nature nights",
+    subtitle: "Astronomy, wildlife walks, dark-sky campouts",
+    audience: "Families, date-night planners, nature educators",
+    hostValue: "Use the land’s quiet, darkness, and natural assets as the experience itself.",
+    guestValue: "A low-barrier first outdoor experience that feels special, guided, and safe.",
+    launchPlay: "Launch monthly dark-sky drops with astronomers, naturalists, and ready-to-stay listings.",
+    color: "bg-indigo-600",
+  },
+  {
+    id: "wellness-retreats",
+    icon: Waves,
+    title: "Wellness retreats",
+    subtitle: "Yoga, breathwork, cold plunge, creative reset days",
+    audience: "Yoga studios, wellness creators, corporate teams",
+    hostValue: "Match underutilized beautiful properties with communities that already gather offline.",
+    guestValue: "The escape of a retreat without the complexity or cost of a multi-day program.",
+    launchPlay: "Pair lavender farms, waterfront sites, and cabins with studio partners for recurring Saturdays.",
+    color: "bg-teal-600",
+  },
+  {
+    id: "skill-shops",
+    icon: Sprout,
+    title: "Outdoor skill workshops",
+    subtitle: "Camping basics, foraging, bushcraft, photography",
+    audience: "First-time campers, parents, outdoor retailers",
+    hostValue: "Create daytime revenue and convert curious guests into future campers.",
+    guestValue: "Learn the skills that make camping feel approachable before booking a bigger trip.",
+    launchPlay: "Bundle beginner workshops with Dick’s Sporting Goods or REI gear checklists and credits.",
+    color: "bg-lime-700",
+  },
+  {
+    id: "micro-festivals",
+    icon: Users,
+    title: "Micro-festivals",
+    subtitle: "Music, maker markets, campfire talks, community weekends",
+    audience: "Creators, local brands, clubs, college outdoor groups",
+    hostValue: "Fill shoulder-season inventory with high-intent groups and repeatable event formats.",
+    guestValue: "A reason to travel now: intimate, outdoor, community-led programming plus camping.",
+    launchPlay: "Pilot invite-only weekends with 5–10 hosts that can support groups, parking, and simple amenities.",
+    color: "bg-rose-600",
+  },
+];
 
-  const strategies = [
-    {
-      id: "group-trip",
-      icon: Users,
-      title: "Group Trip OS",
-      subtitle: "For Existing Outdoor Communities",
-      color: "from-emerald-500 to-teal-600",
-      target: "Trail running groups, climbing gyms, college outdoor clubs",
-      insight: "These groups already organize trips—it's just messy (Google Docs, Venmo, text threads)",
-      experiment: "Create a lightweight 'Plan a Group Trip' flow on Hipcamp. One person (group leader) selects a site → invites others → shared booking / split payment. Seed with 10–20 communities.",
-      whyItWorks: ["Converts existing intent (not trying to create new behavior)", "High LTV (groups repeat trips)", "One organizer = 5–20 new users"],
-      scrappyVersion: "No product build—just a landing page + concierge support + discount code",
-      metrics: { potential: "5-20x", effort: "Low", impact: "High" }
-    },
-    {
-      id: "first-trip",
-      icon: Gift,
-      title: "First Trip Free(ish)",
-      subtitle: "For Lapsed Campers",
-      color: "from-orange-500 to-amber-600",
-      target: "Existing Hipcamp users who haven't booked in 6–12 months",
-      insight: "Dormant users need a compelling reason to return",
-      experiment: "Email/SMS: 'We'll cover $25–$50 of your next stay if you bring someone new'. Require +1 new user to unlock the credit.",
-      whyItWorks: ["Reactivates dormant demand", "Bakes in viral loop (each booking pulls in a new user)", "Lower CAC vs paid"],
-      scrappyVersion: "Frame it as 'introduce a friend to camping' vs discount",
-      metrics: { potential: "2-3x", effort: "Low", impact: "Medium" }
-    },
-    {
-      id: "event-based",
-      icon: Calendar,
-      title: "Event-Based Inventory",
-      subtitle: "Pop-Up Weekends",
-      color: "from-purple-500 to-indigo-600",
-      target: "Trail runners, cyclists, festival-goers",
-      insight: "People already traveling for events—they just need lodging",
-      experiment: "Partner with specific events (trail races, gravel rides). Create Hipcamp 'zones' near events (clusters of bookable sites). Bundle: stay + event proximity + community.",
-      whyItWorks: ["Taps into time-bound intent", "People already traveling → just need lodging", "Can dominate niche verticals"],
-      scrappyVersion: "Start with 2-3 trail race partnerships",
-      metrics: { potential: "3-5x", effort: "Medium", impact: "High" }
-    },
-    {
-      id: "campus",
-      icon: GraduationCap,
-      title: "Campus Ambassador",
-      subtitle: "Outdoor Club Leads",
-      color: "from-blue-500 to-cyan-600",
-      target: "College outdoor programs, outing clubs",
-      insight: "Students are high-frequency + social, creating long-term habits early",
-      experiment: "Recruit 1–2 'Hipcamp Trip Leads' per campus. Give them: $ credits, Early access to curated sites, Simple booking tools for group trips.",
-      whyItWorks: ["Students are high-frequency + social", "Creates long-term habit early", "Word-of-mouth > paid ads"],
-      scrappyVersion: "Pilot with 5 universities in outdoor-heavy regions",
-      metrics: { potential: "10-50x", effort: "Medium", impact: "High" }
-    },
-    {
-      id: "near-me",
-      icon: MapPin,
-      title: "Near Me, This Weekend",
-      subtitle: "Hyper-Local Drops",
-      color: "from-rose-500 to-pink-600",
-      target: "Last-minute planners (huge segment)",
-      insight: "Decision paralysis kills spontaneous trips",
-      experiment: "Weekly push/email: '5 great spots within 90 minutes of you this weekend'. Curated, not marketplace overwhelm. Add urgency: limited availability.",
-      whyItWorks: ["Reduces decision friction", "Captures spontaneous demand", "Especially effective for PNW audience"],
-      scrappyVersion: "Manual curation + email sequence",
-      metrics: { potential: "2-4x", effort: "Low", impact: "Medium" }
-    },
-    {
-      id: "no-gear",
-      icon: Tent,
-      title: "Try Camping Without Gear",
-      subtitle: "First-Timer Funnel",
-      color: "from-green-500 to-emerald-600",
-      target: "Curious but intimidated first-timers",
-      insight: "Gear ownership is the biggest barrier to entry",
-      experiment: "Curate only ready-to-go sites (tents, yurts, cabins). Position as: 'Camping, no gear needed'. Distribute via lifestyle creators, urban audiences, parents.",
-            whyItWorks: ["Expands TAM beyond 'campers'", "Removes biggest barrier to entry", "Parents are a huge segment"],
-            scrappyVersion: "Filter + landing page + influencer partnerships",
-            metrics: { potential: "5-10x", effort: "Medium", impact: "High" }
-          }
-        ];
+const metrics = [
+  { label: "New demand loops", value: "Events → stays", icon: Ticket },
+  { label: "Host revenue layer", value: "Tickets + nights", icon: CalendarDays },
+  { label: "Community acquisition", value: "1 host → 20 guests", icon: Users },
+];
+
+const Index = () => {
+  const [activeEvent, setActiveEvent] = useState(eventTypes[0].id);
+  const selectedEvent = eventTypes.find((event) => event.id === activeEvent) ?? eventTypes[0];
+  const SelectedIcon = selectedEvent.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-stone-50 via-emerald-50/30 to-amber-50/30">
-      {/* Navigation */}
-      <nav className="bg-white/80 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-lg flex items-center justify-center">
-                <Flame className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-bold text-xl text-gray-900">Hipcamp Growth</span>
+    <div className="min-h-screen bg-stone-50 text-slate-950">
+      <nav className="sticky top-0 z-50 border-b border-stone-200 bg-stone-50/95 backdrop-blur">
+        <div className="container mx-auto flex items-center justify-between px-4 py-4">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-emerald-700 text-white shadow-sm">
+              <Flame className="h-5 w-5" />
             </div>
-            <div className="flex gap-3">
-              <Link to="/dashboard">
-                <Button variant="outline" size="sm" className="rounded-full">
-                              <LayoutDashboard className="w-4 h-4 mr-2" />
-                              Dashboard
-                            </Button>
-                          </Link>
-                          <Link to="/group-trip">
-                            <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 rounded-full">
-                              <Users className="w-4 h-4 mr-2" />
-                              Try Group Trip
-                            </Button>
-                          </Link>
-                        </div>
+            <div>
+              <p className="text-lg font-black leading-none tracking-tight">Hip Events</p>
+              <p className="text-xs font-medium text-slate-500">Hosted on Hipcamp</p>
+            </div>
+          </Link>
+          <div className="flex items-center gap-2 sm:gap-3">
+            <Link to="/dashboard">
+              <Button variant="outline" size="sm" className="rounded-full border-emerald-200 bg-white">
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                Dashboard
+              </Button>
+            </Link>
+            <Link to="/host-event">
+              <Button size="sm" className="rounded-full bg-emerald-700 px-4 text-white hover:bg-emerald-800">
+                <Ticket className="mr-2 h-4 w-4" />
+                Host an event
+              </Button>
+            </Link>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <header className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-600/10 via-transparent to-amber-600/10" />
-        <div className="container mx-auto px-4 py-16 md:py-24 relative">
-          <div className="max-w-4xl mx-auto text-center">
-            <Badge className="mb-4 bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-200">
-              <Flame className="w-3 h-3 mr-1" />
-              Growth Strategy Framework
-            </Badge>
-            <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 tracking-tight">
-              Grow Camper Demand
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 to-amber-600">
-                for Hipcamp
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto leading-relaxed">
-                          Data-driven growth levers for leveraging partnerships and camper growth
-            </p>
-            <div className="flex flex-wrap gap-4 justify-center">
-              <Link to="/group-trip">
-                <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-8">
-                  <Sparkles className="w-4 h-4 mr-2" />
-                  Try Group Trip Planner
-                </Button>
-              </Link>
-              <Link to="/dashboard">
-                <Button size="lg" variant="outline" className="rounded-full px-8 border-2">
-                  <TrendingUp className="w-4 h-4 mr-2" />
-                  View Campaign Dashboard
-                </Button>
-              </Link>
+      <header className="relative overflow-hidden border-b border-stone-200 bg-emerald-950 text-white">
+        <div className="absolute right-0 top-0 h-64 w-64 rounded-full bg-amber-400/20 blur-3xl" />
+        <div className="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-teal-400/20 blur-3xl" />
+        <div className="container relative mx-auto px-4 py-16 md:py-24">
+          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+            <div>
+              <Badge className="mb-5 rounded-full border-amber-300/40 bg-amber-300/15 px-4 py-1.5 text-amber-100 hover:bg-amber-300/20">
+                Airbnb Experiences meets Hipcamp
+              </Badge>
+              <h1 className="max-w-4xl text-5xl font-black tracking-tight md:text-7xl">
+                Host unforgettable outdoor events on Hipcamp.
+              </h1>
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-emerald-50 md:text-xl">
+                Hip Events turns campsites, farms, cabins, and wild places into bookable experiences: guided adventures, campfire dinners, wellness retreats, workshops, and micro-festivals.
+              </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link to="/host-event">
+                  <Button size="lg" className="rounded-full bg-amber-400 px-8 font-bold text-emerald-950 hover:bg-amber-300">
+                    Build an event listing
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
+                <Link to="/dashboard">
+                  <Button size="lg" variant="outline" className="rounded-full border-white/40 bg-white/10 px-8 text-white hover:bg-white/20 hover:text-white">
+                    View event performance
+                  </Button>
+                </Link>
+              </div>
             </div>
+
+            <Card className="border-0 bg-white p-2 shadow-2xl">
+              <CardContent className="rounded-3xl bg-stone-50 p-6">
+                <div className="mb-6 flex items-start justify-between gap-4">
+                  <div>
+                    <Badge className="mb-3 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">Featured drop</Badge>
+                    <h2 className="text-2xl font-black text-slate-950">Redwood supper & stargazing</h2>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">A farm dinner, naturalist-led night walk, and optional yurt stay outside Big Sur.</p>
+                  </div>
+                  <div className="rounded-2xl bg-emerald-700 px-4 py-3 text-center text-white">
+                    <p className="text-xs uppercase tracking-wide text-emerald-100">From</p>
+                    <p className="text-2xl font-black">$95</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-3">
+                  {metrics.map((metric) => {
+                    const Icon = metric.icon;
+                    return (
+                      <div key={metric.label} className="rounded-2xl border border-stone-200 bg-white p-4">
+                        <Icon className="mb-3 h-5 w-5 text-emerald-700" />
+                        <p className="text-sm font-black text-slate-950">{metric.value}</p>
+                        <p className="mt-1 text-xs text-slate-500">{metric.label}</p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </header>
 
-      {/* Strategy Overview */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            6 Demand Growth Lever Experiments
-          </h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-            Each strategy targets a specific audience with a tailored approach to drive demand and acquisition
-          </p>
-        </div>
+      <main>
+        <section className="container mx-auto px-4 py-16 md:py-20">
+          <div className="mx-auto mb-12 max-w-3xl text-center">
+            <Badge className="mb-4 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">
+              Experience categories
+            </Badge>
+            <h2 className="text-4xl font-black tracking-tight md:text-5xl">Six ways Hip Events creates new camper demand</h2>
+            <p className="mt-4 text-lg leading-8 text-slate-600">
+              Each format gives people a reason to book now, while giving hosts a higher-value revenue stream beyond nightly stays.
+            </p>
+          </div>
 
-        {/* Strategy Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {strategies.map((strategy) => {
-            const Icon = strategy.icon;
-            return (
-              <Card 
-                key={strategy.id}
-                className={`cursor-pointer transition-all duration-300 hover:shadow-2xl hover:scale-105 border-2 ${
-                  activeStrategy === strategy.id 
-                    ? 'border-emerald-500 shadow-xl ring-4 ring-emerald-500/20' 
-                    : 'border-gray-200 hover:border-emerald-300'
-                }`}
-                onClick={() => setActiveStrategy(strategy.id)}
-              >
-                <CardHeader>
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${strategy.color} flex items-center justify-center mb-4`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  <CardTitle className="text-xl">{strategy.title}</CardTitle>
-                  <CardDescription className="text-base">{strategy.subtitle}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Target className="w-4 h-4 mr-2 text-emerald-600" />
-                      <span className="line-clamp-2">{strategy.target}</span>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {eventTypes.map((event) => {
+              const Icon = event.icon;
+              return (
+                <Card
+                  key={event.id}
+                  onClick={() => setActiveEvent(event.id)}
+                  className={`cursor-pointer rounded-3xl border-2 bg-white transition duration-300 hover:-translate-y-1 hover:shadow-xl ${
+                    activeEvent === event.id ? "border-emerald-600 shadow-lg" : "border-stone-200"
+                  }`}
+                >
+                  <CardHeader>
+                    <div className={`mb-4 flex h-12 w-12 items-center justify-center rounded-2xl ${event.color} text-white`}>
+                      <Icon className="h-6 w-6" />
                     </div>
-                    <div className="flex gap-2 pt-2">
-                      <Badge variant="secondary" className="text-xs">
-                        {strategy.metrics.potential} potential
-                      </Badge>
-                      <Badge variant="outline" className="text-xs">
-                        {strategy.metrics.effort} effort
-                      </Badge>
+                    <CardTitle className="text-xl font-black">{event.title}</CardTitle>
+                    <CardDescription className="text-base">{event.subtitle}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-start gap-2 rounded-2xl bg-stone-100 p-3 text-sm text-slate-600">
+                      <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-700" />
+                      <span>{event.audience}</span>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
-        </div>
-
-        {/* Detailed Strategy View */}
-        <div className="max-w-5xl mx-auto">
-          {strategies.map((strategy) => {
-            const Icon = strategy.icon;
-            const isActive = activeStrategy === strategy.id;
-            return (
-              <div 
-                key={strategy.id}
-                className={`transition-all duration-500 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 hidden'}`}
-              >
-                <Card className="border-2 border-emerald-200 shadow-xl overflow-hidden">
-                  <div className={`bg-gradient-to-r ${strategy.color} p-8 text-white`}>
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-16 h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
-                          <Icon className="w-8 h-8" />
-                        </div>
-                        <div>
-                          <h3 className="text-3xl font-bold mb-2">{strategy.title}</h3>
-                          <p className="text-white/90 text-lg">{strategy.subtitle}</p>
-                        </div>
-                      </div>
-                      <div className="hidden md:flex gap-3">
-                        <Badge className="bg-white/20 text-white border-white/30">
-                          {strategy.metrics.potential} Potential
-                        </Badge>
-                        <Badge className="bg-white/20 text-white border-white/30">
-                          {strategy.metrics.impact} Impact
-                        </Badge>
-                      </div>
-                    </div>
-                  </div>
-
-                  <CardContent className="p-8">
-                    <Tabs defaultValue="insight" className="w-full">
-                      <TabsList className="grid w-full grid-cols-4 mb-8">
-                        <TabsTrigger value="insight">Insight</TabsTrigger>
-                        <TabsTrigger value="experiment">Experiment</TabsTrigger>
-                        <TabsTrigger value="why">Why It Works</TabsTrigger>
-                        <TabsTrigger value="scrappy">Scrappy Version</TabsTrigger>
-                      </TabsList>
-
-                      <TabsContent value="insight" className="space-y-4">
-                        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
-                          <h4 className="font-semibold text-lg text-gray-900 mb-3 flex items-center">
-                            <Target className="w-5 h-5 mr-2 text-emerald-600" />
-                            Target Audience
-                          </h4>
-                          <p className="text-gray-700 text-lg">{strategy.target}</p>
-                        </div>
-                        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-100">
-                          <h4 className="font-semibold text-lg text-gray-900 mb-3 flex items-center">
-                            <Sparkles className="w-5 h-5 mr-2 text-amber-600" />
-                            Key Insight
-                          </h4>
-                          <p className="text-gray-700 text-lg">{strategy.insight}</p>
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="experiment" className="space-y-4">
-                        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-100">
-                          <h4 className="font-semibold text-lg text-gray-900 mb-3 flex items-center">
-                            <Flame className="w-5 h-5 mr-2 text-blue-600" />
-                            Experiment Design
-                          </h4>
-                          <p className="text-gray-700 text-lg leading-relaxed">{strategy.experiment}</p>
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="why" className="space-y-4">
-                        <div className="space-y-3">
-                          {strategy.whyItWorks.map((reason, index) => (
-                            <div key={index} className="flex items-start gap-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-100">
-                              <CheckCircle2 className="w-5 h-5 text-emerald-600 mt-0.5 flex-shrink-0" />
-                              <p className="text-gray-700 text-lg">{reason}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="scrappy" className="space-y-4">
-                        <div className="bg-gradient-to-br from-purple-50 to-violet-50 rounded-2xl p-6 border border-purple-100">
-                          <h4 className="font-semibold text-lg text-gray-900 mb-3 flex items-center">
-                            <TrendingUp className="w-5 h-5 mr-2 text-purple-600" />
-                            MVP / Scrappy Version
-                          </h4>
-                          <p className="text-gray-700 text-lg leading-relaxed">{strategy.scrappyVersion}</p>
-                        </div>
-                      </TabsContent>
-                    </Tabs>
                   </CardContent>
                 </Card>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+              );
+            })}
+          </div>
 
-      {/* Partnership Section */}
-      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Strategic Partnerships
-            </h2>
-            <p className="text-xl text-gray-300 mb-12">
-              Leverage existing outdoor communities and retail partnerships to amplify reach
-            </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                <div className="w-12 h-12 bg-emerald-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-6 h-6 text-white" />
+          <Card className="mt-10 overflow-hidden rounded-[2rem] border-2 border-emerald-200 bg-white shadow-xl">
+            <div className={`${selectedEvent.color} p-8 text-white`}>
+              <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-3xl bg-white/20">
+                    <SelectedIcon className="h-8 w-8" />
+                  </div>
+                  <div>
+                    <h3 className="text-3xl font-black">{selectedEvent.title}</h3>
+                    <p className="text-white/90">{selectedEvent.subtitle}</p>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-lg mb-2">REI</h3>
-                <p className="text-gray-400 text-sm">Co-marketing to outdoor enthusiasts</p>
+                <Badge className="w-fit rounded-full bg-white/20 text-white hover:bg-white/20">Event-ready playbook</Badge>
               </div>
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Tent className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Dick's Sporting Goods</h3>
-                <p className="text-gray-400 text-sm">In-store promotions and bundles</p>
+            </div>
+            <CardContent className="p-6 md:p-8">
+              <Tabs defaultValue="host" className="w-full">
+                <TabsList className="grid h-auto w-full grid-cols-3 rounded-2xl bg-stone-100 p-1">
+                  <TabsTrigger value="host" className="rounded-xl">For hosts</TabsTrigger>
+                  <TabsTrigger value="guest" className="rounded-xl">For guests</TabsTrigger>
+                  <TabsTrigger value="launch" className="rounded-xl">Launch play</TabsTrigger>
+                </TabsList>
+                <TabsContent value="host" className="mt-6 rounded-3xl border border-emerald-100 bg-emerald-50 p-6 text-lg leading-8 text-slate-700">
+                  {selectedEvent.hostValue}
+                </TabsContent>
+                <TabsContent value="guest" className="mt-6 rounded-3xl border border-amber-100 bg-amber-50 p-6 text-lg leading-8 text-slate-700">
+                  {selectedEvent.guestValue}
+                </TabsContent>
+                <TabsContent value="launch" className="mt-6 rounded-3xl border border-teal-100 bg-teal-50 p-6 text-lg leading-8 text-slate-700">
+                  {selectedEvent.launchPlay}
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </section>
+
+        <section className="bg-slate-950 py-16 text-white md:py-20">
+          <div className="container mx-auto px-4">
+            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+              <div>
+                <Badge className="mb-4 rounded-full bg-amber-300 text-slate-950 hover:bg-amber-300">Marketplace flywheel</Badge>
+                <h2 className="text-4xl font-black tracking-tight">Events make Hipcamp a place to do things, not just sleep somewhere.</h2>
+                <p className="mt-5 text-lg leading-8 text-slate-300">
+                  Experiences create time-bound intent, social sharing, and repeatable programming that can be distributed through brands, clubs, creators, and local hosts.
+                </p>
               </div>
-              <div className="bg-white/10 backdrop-blur rounded-2xl p-6 border border-white/20">
-                <div className="w-12 h-12 bg-purple-500 rounded-xl flex items-center justify-center mx-auto mb-4">
-                  <Calendar className="w-6 h-6 text-white" />
-                </div>
-                <h3 className="font-semibold text-lg mb-2">Trail Running Groups</h3>
-                <p className="text-gray-400 text-sm">Community-led trip organization</p>
+              <div className="grid gap-4 md:grid-cols-3">
+                {[
+                  ["Hosts", "Earn through tickets, add-ons, and overnight stays."],
+                  ["Guests", "Discover guided reasons to get outside this weekend."],
+                  ["Partners", "Bring communities to curated outdoor moments."],
+                ].map(([title, copy]) => (
+                  <div key={title} className="rounded-3xl border border-white/10 bg-white/10 p-6">
+                    <CheckCircle2 className="mb-5 h-6 w-6 text-amber-300" />
+                    <h3 className="text-xl font-black">{title}</h3>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">{copy}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="max-w-3xl mx-auto text-center">
-          <Card className="border-2 border-emerald-200 shadow-2xl overflow-hidden">
-            <CardContent className="p-12">
-              <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <Flame className="w-8 h-8 text-white" />
+        <section className="container mx-auto px-4 py-16 md:py-20">
+          <Card className="overflow-hidden rounded-[2rem] border-2 border-emerald-200 bg-white shadow-xl">
+            <CardContent className="grid gap-8 p-8 md:grid-cols-[1fr_auto] md:items-center md:p-12">
+              <div>
+                <Badge className="mb-4 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">Pilot concept</Badge>
+                <h2 className="text-3xl font-black tracking-tight md:text-4xl">Start with curated event drops, then open self-serve hosting.</h2>
+                <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
+                  Seed the marketplace with high-quality hosts and trusted partners, learn what sells, then give qualified Hipcamp hosts a simple event listing flow.
+                </p>
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Ready to Grow?
-              </h2>
-              <p className="text-gray-600 text-lg mb-8">
-                Start with one strategy, measure results, then scale what works. Focus on high-impact, low-effort wins first.
-              </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <Link to="/group-trip">
-                  <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full px-8">
-                    <ArrowRight className="w-4 h-4 mr-2" />
-                    Try Group Trip OS
-                  </Button>
-                </Link>
-                <Link to="/dashboard">
-                  <Button size="lg" variant="outline" className="rounded-full px-8 border-2">
-                    View Dashboard
-                  </Button>
-                </Link>
-              </div>
+              <Link to="/host-event">
+                <Button size="lg" className="rounded-full bg-emerald-700 px-8 text-white hover:bg-emerald-800">
+                  Build the first event
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
             </CardContent>
           </Card>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">
-            Growth Strategy Framework for Hipcamp • Built with data-driven insights
-          </p>
+      <footer className="bg-slate-950 py-10 text-white">
+        <div className="container mx-auto px-4 text-center text-sm text-slate-400">
+          Hip Events for Hipcamp • Outdoor experiences, hosted where camping already happens
         </div>
       </footer>
     </div>
