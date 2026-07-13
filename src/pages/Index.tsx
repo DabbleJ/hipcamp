@@ -9,6 +9,7 @@ import {
   CalendarDays,
   CheckCircle2,
   Flame,
+  Heart,
   LayoutDashboard,
   MapPin,
   MoonStar,
@@ -94,6 +95,57 @@ const metrics = [
   { label: "New demand loops", value: "Events → stays", icon: Ticket },
   { label: "Host revenue layer", value: "Tickets + nights", icon: CalendarDays },
   { label: "Community acquisition", value: "1 host → 20 guests", icon: Users },
+];
+
+const bookingExamples = [
+  {
+    time: "10 AM",
+    title: "Guided Redwood Foraging Walk",
+    price: "$48",
+    rating: "4.98",
+    location: "Santa Cruz, CA",
+    image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    time: "4 PM",
+    title: "Campfire Dinner at Lavender Hill",
+    price: "$95",
+    rating: "4.96",
+    location: "Petaluma, CA",
+    image: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    time: "8 PM",
+    title: "Dark Sky Stargazing Campout",
+    price: "$72",
+    rating: "4.94",
+    location: "Joshua Tree, CA",
+    image: "https://images.unsplash.com/photo-1532798369041-b33eb576ef16?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    time: "9 AM",
+    title: "Trail Run + Recovery Brunch",
+    price: "$64",
+    rating: "4.91",
+    location: "Bend, OR",
+    image: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    time: "11 AM",
+    title: "Beginner Camp Skills Workshop",
+    price: "$55",
+    rating: "4.89",
+    location: "Mt. Hood, OR",
+    image: "https://images.unsplash.com/photo-1504851149312-7a075b496cc7?auto=format&fit=crop&w=700&q=80",
+  },
+  {
+    time: "5 PM",
+    title: "Riverside Yoga & Sound Bath",
+    price: "$68",
+    rating: "4.97",
+    location: "Russian River, CA",
+    image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=700&q=80",
+  },
 ];
 
 const Index = () => {
@@ -193,6 +245,54 @@ const Index = () => {
       </header>
 
       <main>
+        <section className="border-b border-stone-200 bg-white py-12 md:py-14">
+          <div className="container mx-auto px-4">
+            <div className="mb-7 flex items-end justify-between gap-4">
+              <div>
+                <Badge className="mb-3 rounded-full bg-amber-100 text-amber-900 hover:bg-amber-100">
+                  Guest booking examples
+                </Badge>
+                <h2 className="text-3xl font-black tracking-tight md:text-4xl">This weekend on Hip Events</h2>
+                <p className="mt-2 max-w-2xl text-slate-600">
+                  A consumer-facing row of bookable experiences that gives campers a reason to plan a trip now.
+                </p>
+              </div>
+              <Link to="/host-event" className="hidden md:block">
+                <Button variant="outline" className="rounded-full border-stone-300 bg-white">
+                  Build one
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+            </div>
+
+            <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {bookingExamples.map((experience) => (
+                <article key={experience.title} className="w-[245px] flex-none snap-start md:w-[270px]">
+                  <div
+                    className="relative h-56 overflow-hidden rounded-[1.75rem] bg-stone-200 bg-cover bg-center shadow-sm transition duration-300 hover:scale-[1.02]"
+                    style={{ backgroundImage: `url(${experience.image})` }}
+                  >
+                    <div className="absolute inset-0 bg-slate-950/10" />
+                    <Badge className="absolute left-4 top-4 rounded-full bg-white/90 px-4 py-2 text-sm font-black text-slate-950 shadow-lg hover:bg-white">
+                      {experience.time}
+                    </Badge>
+                    <button className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950/35 text-white backdrop-blur transition hover:bg-slate-950/55" aria-label={`Save ${experience.title}`}>
+                      <Heart className="h-5 w-5" />
+                    </button>
+                  </div>
+                  <div className="px-1 pt-4">
+                    <h3 className="line-clamp-2 text-lg font-black leading-tight text-slate-950">{experience.title}</h3>
+                    <p className="mt-1 text-sm font-medium text-slate-500">{experience.location}</p>
+                    <p className="mt-1 text-base text-slate-600">
+                      From {experience.price} / guest · ★ {experience.rating}
+                    </p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section className="container mx-auto px-4 py-16 md:py-20">
           <div className="mx-auto mb-12 max-w-3xl text-center">
             <Badge className="mb-4 rounded-full bg-emerald-100 text-emerald-900 hover:bg-emerald-100">
