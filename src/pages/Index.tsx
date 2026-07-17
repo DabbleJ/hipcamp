@@ -270,7 +270,7 @@ const Index = () => {
                 <Badge className="mb-3 rounded-full bg-[#fff0cc] font-bold text-[#7d4b00] hover:bg-[#fff0cc]">
                   Guest booking examples
                 </Badge>
-                <h2 className="text-3xl font-black tracking-tight text-[#2f3324] md:text-4xl">This weekend on Hip Events</h2>
+                <h2 className="text-3xl font-black tracking-tight text-[#2f3324] md:text-4xl">Upcoming Events on Hipcamp</h2>
                 <p className="mt-2 max-w-2xl text-[#68645b]">
                   A consumer-facing row of bookable experiences that gives campers a reason to plan a trip now.
                 </p>
