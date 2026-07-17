@@ -123,7 +123,7 @@ const bookingExamples = [
   },
   {
     time: "Sep 6",
-    title: "Trail Run + Recovery Brunch",
+    title: "Mountain Hike + Recovery Brunch",
     price: "$64",
     rating: "4.91",
     location: "Bend, OR",
@@ -224,6 +224,13 @@ const Index = () => {
                     <p className="text-xs uppercase tracking-wide text-[#dce8d2]">From</p>
                     <p className="text-2xl font-black">$95</p>
                   </div>
+                </div>
+                <div className="mb-5 overflow-hidden rounded-[1.35rem] border border-[#e2dace] bg-white shadow-sm">
+                  <img
+                    src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=900&q=80"
+                    alt="Sunlight filtering through redwood trees"
+                    className="h-28 w-full object-cover"
+                  />
                 </div>
                 <div className="grid grid-cols-3 gap-3">
                   {metrics.map((metric) => {
