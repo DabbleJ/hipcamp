@@ -322,10 +322,10 @@ const EventDashboard = () => {
                 <div className="p-6 md:p-8">
                   <div className="mb-6 flex flex-wrap items-center gap-3">
                     <Badge className="rounded-full bg-[#f4c542] px-3 py-1 font-black text-[#293121] hover:bg-[#f4c542]">
-                      <BrainCircuit className="mr-1.5 h-3.5 w-3.5" /> ML signal layer
+                      <BrainCircuit className="mr-1.5 h-3.5 w-3.5" /> ETL/ELT Tools
                     </Badge>
                     <Badge className="rounded-full border-white/15 bg-white/10 px-3 py-1 font-bold text-white hover:bg-white/10">
-                      <Database className="mr-1.5 h-3.5 w-3.5" /> warehouse correlations
+                      <Database className="mr-1.5 h-3.5 w-3.5" /> Data Warehouse
                     </Badge>
                   </div>
                   <h2 className="max-w-2xl text-3xl font-black tracking-tight md:text-4xl">
