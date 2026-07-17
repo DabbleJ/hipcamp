@@ -21,6 +21,18 @@ import {
   Waves,
 } from "lucide-react";
 
+const guidedHostBullets = [
+  "Create new ticket revenue from hikes, clinics, paddles, and guided route add-ons.",
+  "Use events to lift overnight stays, with the data dashboard showing +22% completed bookings tied to faster host operations.",
+  "Turn attendees into future campers through follow-up stays, add-on meals, gear rentals, and premium weekend packages.",
+];
+
+const guidedGuestBullets = [
+  "Meet other people who also want an easy reason to get outside.",
+  "Learn IRL skills from a real host instead of scrolling another itinerary or watching another tutorial.",
+  "Choose a memorable alternative to another brunch, bar night, or same-old weekend plan.",
+];
+
 const eventTypes = [
   {
     id: "guided-adventures",
@@ -356,19 +368,35 @@ const Index = () => {
             </div>
             <CardContent className="p-6 md:p-8">
               <Tabs defaultValue="host" className="w-full">
-                <TabsList className="grid h-auto w-full grid-cols-3 rounded-2xl bg-[#f4f0e8] p-1">
+                <TabsList className="grid h-auto w-full grid-cols-2 rounded-2xl bg-[#f4f0e8] p-1">
                   <TabsTrigger value="host" className="rounded-xl">For hosts</TabsTrigger>
                   <TabsTrigger value="guest" className="rounded-xl">For guests</TabsTrigger>
-                  <TabsTrigger value="launch" className="rounded-xl">Launch play</TabsTrigger>
                 </TabsList>
                 <TabsContent value="host" className="mt-6 rounded-3xl border border-[#dbe5d2] bg-[#f2f7ec] p-6 text-lg leading-8 text-[#5f5b52]">
-                  {selectedEvent.hostValue}
+                  <p>{selectedEvent.hostValue}</p>
+                  {selectedEvent.id === "guided-adventures" && (
+                    <ul className="mt-5 space-y-3 text-base leading-7">
+                      {guidedHostBullets.map((bullet) => (
+                        <li key={bullet} className="flex gap-3">
+                          <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-[#536247]" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </TabsContent>
                 <TabsContent value="guest" className="mt-6 rounded-3xl border border-[#f3dcac] bg-[#fff6df] p-6 text-lg leading-8 text-[#5f5b52]">
-                  {selectedEvent.guestValue}
-                </TabsContent>
-                <TabsContent value="launch" className="mt-6 rounded-3xl border border-[#d7e3de] bg-[#eef6f2] p-6 text-lg leading-8 text-[#5f5b52]">
-                  {selectedEvent.launchPlay}
+                  <p>{selectedEvent.guestValue}</p>
+                  {selectedEvent.id === "guided-adventures" && (
+                    <ul className="mt-5 space-y-3 text-base leading-7">
+                      {guidedGuestBullets.map((bullet) => (
+                        <li key={bullet} className="flex gap-3">
+                          <CheckCircle2 className="mt-1 h-5 w-5 flex-shrink-0 text-[#c56b2c]" />
+                          <span>{bullet}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </TabsContent>
               </Tabs>
             </CardContent>
