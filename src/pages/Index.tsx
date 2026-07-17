@@ -98,7 +98,7 @@ const metrics = [
 
 const bookingExamples = [
   {
-    time: "10 AM",
+    time: "Aug 3",
     title: "Guided Redwood Foraging Walk",
     price: "$48",
     rating: "4.98",
@@ -106,7 +106,7 @@ const bookingExamples = [
     image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80",
   },
   {
-    time: "4 PM",
+    time: "Aug 17",
     title: "Campfire Dinner at Lavender Hill",
     price: "$95",
     rating: "4.96",
@@ -114,7 +114,7 @@ const bookingExamples = [
     image: "https://images.unsplash.com/photo-1506368249639-73a05d6f6488?auto=format&fit=crop&w=700&q=80",
   },
   {
-    time: "8 PM",
+    time: "Aug 29",
     title: "Dark Sky Stargazing Campout",
     price: "$72",
     rating: "4.94",
@@ -122,7 +122,7 @@ const bookingExamples = [
     image: "https://images.unsplash.com/photo-1532798369041-b33eb576ef16?auto=format&fit=crop&w=700&q=80",
   },
   {
-    time: "9 AM",
+    time: "Sep 6",
     title: "Trail Run + Recovery Brunch",
     price: "$64",
     rating: "4.91",
@@ -130,7 +130,7 @@ const bookingExamples = [
     image: "https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=700&q=80",
   },
   {
-    time: "11 AM",
+    time: "Sep 18",
     title: "Beginner Camp Skills Workshop",
     price: "$55",
     rating: "4.89",
@@ -138,7 +138,7 @@ const bookingExamples = [
     image: "https://images.unsplash.com/photo-1504851149312-7a075b496cc7?auto=format&fit=crop&w=700&q=80",
   },
   {
-    time: "5 PM",
+    time: "Sep 27",
     title: "Riverside Yoga & Sound Bath",
     price: "$68",
     rating: "4.97",
