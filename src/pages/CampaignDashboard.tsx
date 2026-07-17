@@ -143,7 +143,7 @@ const mlSignals = [
     icon: GitBranch,
     lift: "+14% follow-up stays",
     confidence: "0.76",
-    copy: "Guests who attend events are more likely to book a future overnight stay at the property.",
+    copy: "Guests who attend Hip Events are more likely to book a future overnight stay at the property.",
     bars: [44, 61, 75],
   },
 ];
@@ -282,8 +282,8 @@ const EventDashboard = () => {
               <Flame className="h-5 w-5" />
             </div>
             <div>
-              <h1 className="text-2xl font-black tracking-tight">Hip Events Dashboard</h1>
-              <p className="text-sm text-slate-500">Track ticket sales, host revenue, and event demand</p>
+              <h1 className="text-2xl font-black tracking-tight">Hip Events + Data Dashboard</h1>
+              <p className="text-sm text-slate-500">Track model signals, ticket sales, host revenue, and event demand</p>
             </div>
           </div>
           <div className="flex gap-2 sm:gap-3">
@@ -304,201 +304,232 @@ const EventDashboard = () => {
       </header>
 
       <main className="container mx-auto px-4 py-8">
-        <section className="mb-8 overflow-hidden rounded-[2rem] border-2 border-[#dfe7d8] bg-[#293121] text-white shadow-xl">
-          <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
-            <div className="p-6 md:p-8">
-              <div className="mb-6 flex flex-wrap items-center gap-3">
-                <Badge className="rounded-full bg-[#f4c542] px-3 py-1 font-black text-[#293121] hover:bg-[#f4c542]">
-                  <BrainCircuit className="mr-1.5 h-3.5 w-3.5" /> ML signal layer
-                </Badge>
-                <Badge className="rounded-full border-white/15 bg-white/10 px-3 py-1 font-bold text-white hover:bg-white/10">
-                  <Database className="mr-1.5 h-3.5 w-3.5" /> warehouse correlations
-                </Badge>
-              </div>
-              <h2 className="max-w-2xl text-3xl font-black tracking-tight md:text-4xl">
-                Predict which host behaviors turn Hip Events into repeatable revenue.
-              </h2>
-              <p className="mt-4 max-w-2xl text-sm font-medium leading-7 text-[#d8d4ca] md:text-base">
-                A top-level model view connects host operations, listing quality, pricing strategy, and event attendance to completed bookings, review lift, and follow-up stays.
-              </p>
+        <Tabs defaultValue="data" className="w-full">
+          <TabsList className="mb-8 grid h-auto w-full grid-cols-2 rounded-[1.6rem] bg-[#e8e2d8] p-1.5 md:w-[560px]">
+            <TabsTrigger value="data" className="rounded-[1.25rem] px-4 py-3 text-sm font-black data-[state=active]:bg-[#2f3324] data-[state=active]:text-white">
+              <BrainCircuit className="mr-2 h-4 w-4" />
+              Data + Analytics
+            </TabsTrigger>
+            <TabsTrigger value="events" className="rounded-[1.25rem] px-4 py-3 text-sm font-black data-[state=active]:bg-[#2f3324] data-[state=active]:text-white">
+              <Ticket className="mr-2 h-4 w-4" />
+              Events
+            </TabsTrigger>
+          </TabsList>
 
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                {mlSignals.map((signal) => {
-                  const Icon = signal.icon;
-                  return (
-                    <div key={signal.label} className="rounded-3xl border border-white/10 bg-white/[0.07] p-4 backdrop-blur">
-                      <div className="mb-3 flex items-start justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/12 text-[#f4c542]">
-                            <Icon className="h-5 w-5" />
+          <TabsContent value="data" className="mt-0 space-y-8">
+            <section className="overflow-hidden rounded-[2rem] border-2 border-[#dfe7d8] bg-[#293121] text-white shadow-xl">
+              <div className="grid gap-0 lg:grid-cols-[1.05fr_0.95fr]">
+                <div className="p-6 md:p-8">
+                  <div className="mb-6 flex flex-wrap items-center gap-3">
+                    <Badge className="rounded-full bg-[#f4c542] px-3 py-1 font-black text-[#293121] hover:bg-[#f4c542]">
+                      <BrainCircuit className="mr-1.5 h-3.5 w-3.5" /> ML signal layer
+                    </Badge>
+                    <Badge className="rounded-full border-white/15 bg-white/10 px-3 py-1 font-bold text-white hover:bg-white/10">
+                      <Database className="mr-1.5 h-3.5 w-3.5" /> warehouse correlations
+                    </Badge>
+                  </div>
+                  <h2 className="max-w-2xl text-3xl font-black tracking-tight md:text-4xl">
+                    Predict which host behaviors turn Hip Events into repeatable revenue.
+                  </h2>
+                  <p className="mt-4 max-w-2xl text-sm font-medium leading-7 text-[#d8d4ca] md:text-base">
+                    A top-level model view connects host operations, listing quality, pricing strategy, and event attendance to completed bookings, review lift, and follow-up stays.
+                  </p>
+
+                  <div className="mt-7 grid gap-3 sm:grid-cols-2">
+                    {mlSignals.map((signal) => {
+                      const Icon = signal.icon;
+                      return (
+                        <div key={signal.label} className="rounded-3xl border border-white/10 bg-white/[0.07] p-4 backdrop-blur">
+                          <div className="mb-3 flex items-start justify-between gap-3">
+                            <div className="flex items-center gap-3">
+                              <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white/12 text-[#f4c542]">
+                                <Icon className="h-5 w-5" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-black">{signal.label}</p>
+                                <p className="text-xs font-semibold text-[#d8d4ca]">confidence {signal.confidence}</p>
+                              </div>
+                            </div>
+                            <span className="rounded-full bg-[#f15a24] px-3 py-1 text-xs font-black text-white">{signal.lift}</span>
                           </div>
-                          <div>
-                            <p className="text-sm font-black">{signal.label}</p>
-                            <p className="text-xs font-semibold text-[#d8d4ca]">confidence {signal.confidence}</p>
+                          <p className="min-h-12 text-xs font-medium leading-5 text-[#d8d4ca]">{signal.copy}</p>
+                          <div className="mt-4 space-y-2">
+                            {signal.bars.map((bar, index) => (
+                              <div key={`${signal.label}-${bar}`} className="flex items-center gap-2">
+                                <span className="w-10 text-[10px] font-black uppercase tracking-wide text-white/55">Q{index + 1}</span>
+                                <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
+                                  <div className="h-full rounded-full bg-[#f4c542]" style={{ width: `${bar}%` }} />
+                                </div>
+                                <span className="w-8 text-right text-[10px] font-black text-white/75">{bar}</span>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                        <span className="rounded-full bg-[#f15a24] px-3 py-1 text-xs font-black text-white">{signal.lift}</span>
-                      </div>
-                      <p className="min-h-12 text-xs font-medium leading-5 text-[#d8d4ca]">{signal.copy}</p>
-                      <div className="mt-4 space-y-2">
-                        {signal.bars.map((bar, index) => (
-                          <div key={`${signal.label}-${bar}`} className="flex items-center gap-2">
-                            <span className="w-10 text-[10px] font-black uppercase tracking-wide text-white/55">Q{index + 1}</span>
-                            <div className="h-2 flex-1 overflow-hidden rounded-full bg-white/10">
-                              <div className="h-full rounded-full bg-[#f4c542]" style={{ width: `${bar}%` }} />
-                            </div>
-                            <span className="w-8 text-right text-[10px] font-black text-white/75">{bar}</span>
-                          </div>
-                        ))}
-                      </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="border-t border-white/10 bg-[#171d14] p-6 md:p-8 lg:border-l lg:border-t-0">
+                  <div className="mb-5 flex items-center justify-between gap-3">
+                    <div>
+                      <p className="flex items-center gap-2 text-sm font-black text-[#f4c542]"><Code2 className="h-4 w-4" /> SQL feature extraction</p>
+                      <p className="mt-1 text-xs font-semibold text-[#aaa79e]">daily model refresh · causal lift monitor</p>
                     </div>
+                    <Badge className="rounded-full bg-white/10 font-bold text-white hover:bg-white/10">v0.4 beta</Badge>
+                  </div>
+                  <div className="rounded-3xl border border-white/10 bg-black/25 p-5 font-mono text-xs leading-6 text-[#dce8d2] shadow-inner">
+                    {sqlPreview.map((line, index) => (
+                      <div key={line} className="flex gap-4">
+                        <span className="select-none text-white/30">{String(index + 1).padStart(2, "0")}</span>
+                        <span className={line.startsWith("SELECT") || line.startsWith("WITH") ? "text-[#f4c542]" : "text-[#dce8d2]"}>{line}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 grid grid-cols-2 gap-3">
+                    <div className="rounded-2xl bg-white/8 p-4">
+                      <p className="text-xs font-semibold text-[#aaa79e]">Model target</p>
+                      <p className="mt-1 text-lg font-black">Booking lift</p>
+                    </div>
+                    <div className="rounded-2xl bg-white/8 p-4">
+                      <p className="text-xs font-semibold text-[#aaa79e]">Explainability</p>
+                      <p className="mt-1 text-lg font-black">SHAP ranked</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="rounded-[2rem] border-2 border-[#e2dace] bg-white p-5 shadow-sm md:p-6">
+              <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <Badge className="mb-3 rounded-full bg-[#fff0cc] font-black text-[#7d4b00] hover:bg-[#fff0cc]">
+                    feature correlation matrix
+                  </Badge>
+                  <h2 className="text-2xl font-black tracking-tight text-[#2f3324]">Data points the model is watching</h2>
+                  <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#68645b]">
+                    SQL-derived features are scored as directional signals, helping the team see where host behavior, listing quality, pricing, and Hip Events attendance line up with revenue outcomes.
+                  </p>
+                </div>
+                <div className="rounded-2xl bg-[#f4f0e8] px-4 py-3 text-xs font-black text-[#596247]">
+                  updated daily · correlation ≠ causation
+                </div>
+              </div>
+
+              <div className="grid gap-4 lg:grid-cols-4">
+                {correlationInsights.map((insight) => {
+                  const Icon = insight.icon;
+                  return (
+                    <Card key={insight.title} className="rounded-[1.6rem] border border-[#e2dace] bg-[#fbfaf6] shadow-none">
+                      <CardContent className="p-5">
+                        <div className="mb-4 flex items-start justify-between gap-3">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#334227] text-white">
+                            <Icon className="h-5 w-5" />
+                          </div>
+                          <span className="rounded-full bg-[#e7f0df] px-3 py-1 text-xs font-black text-[#334227]">r≈.{insight.strength}</span>
+                        </div>
+                        <h3 className="text-base font-black leading-tight text-[#2f3324]">{insight.title}</h3>
+                        <p className="mt-3 rounded-2xl bg-[#2f3324] px-3 py-2 font-mono text-[11px] leading-5 text-[#dce8d2]">
+                          {insight.query}
+                        </p>
+                        <div className="mt-4 space-y-2">
+                          <div className="flex items-center justify-between gap-3 text-sm">
+                            <span className="font-semibold text-[#68645b]">Primary lift</span>
+                            <span className="font-black text-[#f15a24]">{insight.lift}</span>
+                          </div>
+                          <div className="flex items-center justify-between gap-3 text-sm">
+                            <span className="font-semibold text-[#68645b]">Secondary signal</span>
+                            <span className="text-right font-black text-[#334227]">{insight.secondary}</span>
+                          </div>
+                        </div>
+                        <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e2dace]">
+                          <div className="h-full rounded-full bg-[#f4c542]" style={{ width: `${insight.strength}%` }} />
+                        </div>
+                        <p className="mt-4 text-xs font-semibold leading-5 text-[#68645b]">{insight.detail}</p>
+                      </CardContent>
+                    </Card>
                   );
                 })}
               </div>
-            </div>
+            </section>
+          </TabsContent>
 
-            <div className="border-t border-white/10 bg-[#171d14] p-6 md:p-8 lg:border-l lg:border-t-0">
-              <div className="mb-5 flex items-center justify-between gap-3">
+          <TabsContent value="events" className="mt-0 space-y-8">
+            <section>
+              <div className="mb-5 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                 <div>
-                  <p className="flex items-center gap-2 text-sm font-black text-[#f4c542]"><Code2 className="h-4 w-4" /> SQL feature extraction</p>
-                  <p className="mt-1 text-xs font-semibold text-[#aaa79e]">daily model refresh · causal lift monitor</p>
-                </div>
-                <Badge className="rounded-full bg-white/10 font-bold text-white hover:bg-white/10">v0.4 beta</Badge>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-black/25 p-5 font-mono text-xs leading-6 text-[#dce8d2] shadow-inner">
-                {sqlPreview.map((line, index) => (
-                  <div key={line} className="flex gap-4">
-                    <span className="select-none text-white/30">{String(index + 1).padStart(2, "0")}</span>
-                    <span className={line.startsWith("SELECT") || line.startsWith("WITH") ? "text-[#f4c542]" : "text-[#dce8d2]"}>{line}</span>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <div className="rounded-2xl bg-white/8 p-4">
-                  <p className="text-xs font-semibold text-[#aaa79e]">Model target</p>
-                  <p className="mt-1 text-lg font-black">Booking lift</p>
-                </div>
-                <div className="rounded-2xl bg-white/8 p-4">
-                  <p className="text-xs font-semibold text-[#aaa79e]">Explainability</p>
-                  <p className="mt-1 text-lg font-black">SHAP ranked</p>
+                  <Badge className="mb-3 rounded-full bg-[#e7f0df] font-black text-[#334227] hover:bg-[#e7f0df]">
+                    events performance
+                  </Badge>
+                  <h2 className="text-2xl font-black tracking-tight text-[#2f3324]">Event data and revenue</h2>
+                  <p className="mt-2 max-w-2xl text-sm font-semibold leading-6 text-[#68645b]">
+                    Monitor ticket demand, revenue, waitlists, and sell-through for the active Hip Events portfolio.
+                  </p>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
 
-        <section className="mb-8 rounded-[2rem] border-2 border-[#e2dace] bg-white p-5 shadow-sm md:p-6">
-          <div className="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div>
-              <Badge className="mb-3 rounded-full bg-[#fff0cc] font-black text-[#7d4b00] hover:bg-[#fff0cc]">
-                feature correlation matrix
-              </Badge>
-              <h2 className="text-2xl font-black tracking-tight text-[#2f3324]">Data points the model is watching</h2>
-              <p className="mt-2 max-w-3xl text-sm font-semibold leading-6 text-[#68645b]">
-                SQL-derived features are scored as directional signals, helping the team see where host behavior, listing quality, pricing, and Hip Events attendance line up with revenue outcomes.
-              </p>
-            </div>
-            <div className="rounded-2xl bg-[#f4f0e8] px-4 py-3 text-xs font-black text-[#596247]">
-              updated daily · correlation ≠ causation
-            </div>
-          </div>
-
-          <div className="grid gap-4 lg:grid-cols-4">
-            {correlationInsights.map((insight) => {
-              const Icon = insight.icon;
-              return (
-                <Card key={insight.title} className="rounded-[1.6rem] border border-[#e2dace] bg-[#fbfaf6] shadow-none">
-                  <CardContent className="p-5">
-                    <div className="mb-4 flex items-start justify-between gap-3">
-                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#334227] text-white">
-                        <Icon className="h-5 w-5" />
-                      </div>
-                      <span className="rounded-full bg-[#e7f0df] px-3 py-1 text-xs font-black text-[#334227]">r≈.{insight.strength}</span>
-                    </div>
-                    <h3 className="text-base font-black leading-tight text-[#2f3324]">{insight.title}</h3>
-                    <p className="mt-3 rounded-2xl bg-[#2f3324] px-3 py-2 font-mono text-[11px] leading-5 text-[#dce8d2]">
-                      {insight.query}
-                    </p>
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center justify-between gap-3 text-sm">
-                        <span className="font-semibold text-[#68645b]">Primary lift</span>
-                        <span className="font-black text-[#f15a24]">{insight.lift}</span>
-                      </div>
-                      <div className="flex items-center justify-between gap-3 text-sm">
-                        <span className="font-semibold text-[#68645b]">Secondary signal</span>
-                        <span className="text-right font-black text-[#334227]">{insight.secondary}</span>
-                      </div>
-                    </div>
-                    <div className="mt-4 h-2 overflow-hidden rounded-full bg-[#e2dace]">
-                      <div className="h-full rounded-full bg-[#f4c542]" style={{ width: `${insight.strength}%` }} />
-                    </div>
-                    <p className="mt-4 text-xs font-semibold leading-5 text-[#68645b]">{insight.detail}</p>
+              <div className="grid gap-5 md:grid-cols-4">
+                <Card className="rounded-3xl border-2 border-emerald-200 bg-white">
+                  <CardHeader className="pb-3">
+                    <CardDescription>Tickets booked</CardDescription>
+                    <CardTitle className="text-3xl font-black">{totalBooked}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex items-center text-sm font-medium text-emerald-700">
+                    <ArrowUpRight className="mr-1 h-4 w-4" />
+                    +31 this week
                   </CardContent>
                 </Card>
-              );
-            })}
-          </div>
-        </section>
+                <Card className="rounded-3xl border-2 border-amber-200 bg-white">
+                  <CardHeader className="pb-3">
+                    <CardDescription>Event revenue</CardDescription>
+                    <CardTitle className="text-3xl font-black">${totalRevenue.toLocaleString()}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex items-center text-sm font-medium text-amber-700">
+                    <ArrowUpRight className="mr-1 h-4 w-4" />
+                    +$2.6k this week
+                  </CardContent>
+                </Card>
+                <Card className="rounded-3xl border-2 border-indigo-200 bg-white">
+                  <CardHeader className="pb-3">
+                    <CardDescription>Waitlist demand</CardDescription>
+                    <CardTitle className="text-3xl font-black">{totalWaitlist}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="text-sm font-medium text-indigo-700">Signals expansion opportunities</CardContent>
+                </Card>
+                <Card className="rounded-3xl border-2 border-teal-200 bg-white">
+                  <CardHeader className="pb-3">
+                    <CardDescription>Sell-through</CardDescription>
+                    <CardTitle className="text-3xl font-black">{sellThrough}%</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Progress value={sellThrough} className="h-2" />
+                    <p className="mt-2 text-xs text-slate-500">{totalBooked} of {totalCapacity} tickets</p>
+                  </CardContent>
+                </Card>
+              </div>
+            </section>
 
-        <div className="mb-8 grid gap-5 md:grid-cols-4">
-          <Card className="rounded-3xl border-2 border-emerald-200 bg-white">
-            <CardHeader className="pb-3">
-              <CardDescription>Tickets booked</CardDescription>
-              <CardTitle className="text-3xl font-black">{totalBooked}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center text-sm font-medium text-emerald-700">
-              <ArrowUpRight className="mr-1 h-4 w-4" />
-              +31 this week
-            </CardContent>
-          </Card>
-          <Card className="rounded-3xl border-2 border-amber-200 bg-white">
-            <CardHeader className="pb-3">
-              <CardDescription>Event revenue</CardDescription>
-              <CardTitle className="text-3xl font-black">${totalRevenue.toLocaleString()}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex items-center text-sm font-medium text-amber-700">
-              <ArrowUpRight className="mr-1 h-4 w-4" />
-              +$2.6k this week
-            </CardContent>
-          </Card>
-          <Card className="rounded-3xl border-2 border-indigo-200 bg-white">
-            <CardHeader className="pb-3">
-              <CardDescription>Waitlist demand</CardDescription>
-              <CardTitle className="text-3xl font-black">{totalWaitlist}</CardTitle>
-            </CardHeader>
-            <CardContent className="text-sm font-medium text-indigo-700">Signals expansion opportunities</CardContent>
-          </Card>
-          <Card className="rounded-3xl border-2 border-teal-200 bg-white">
-            <CardHeader className="pb-3">
-              <CardDescription>Sell-through</CardDescription>
-              <CardTitle className="text-3xl font-black">{sellThrough}%</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Progress value={sellThrough} className="h-2" />
-              <p className="mt-2 text-xs text-slate-500">{totalBooked} of {totalCapacity} tickets</p>
-            </CardContent>
-          </Card>
-        </div>
+            <Tabs defaultValue="all" className="w-full">
+              <TabsList className="mb-6 rounded-2xl bg-stone-200 p-1">
+                <TabsTrigger value="all" className="rounded-xl">All events</TabsTrigger>
+                <TabsTrigger value="live" className="rounded-xl">Live</TabsTrigger>
+                <TabsTrigger value="sold-out" className="rounded-xl">Sold out</TabsTrigger>
+                <TabsTrigger value="draft" className="rounded-xl">Drafts</TabsTrigger>
+              </TabsList>
 
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="mb-6 rounded-2xl bg-stone-200 p-1">
-            <TabsTrigger value="all" className="rounded-xl">All events</TabsTrigger>
-            <TabsTrigger value="live" className="rounded-xl">Live</TabsTrigger>
-            <TabsTrigger value="sold-out" className="rounded-xl">Sold out</TabsTrigger>
-            <TabsTrigger value="draft" className="rounded-xl">Drafts</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="all" className="space-y-4">
-            {events.map(renderEventCard)}
-          </TabsContent>
-          <TabsContent value="live" className="space-y-4">
-            {liveEvents.map(renderEventCard)}
-          </TabsContent>
-          <TabsContent value="sold-out" className="space-y-4">
-            {events.filter((event) => event.status === "sold-out").map(renderEventCard)}
-          </TabsContent>
-          <TabsContent value="draft" className="space-y-4">
-            {events.filter((event) => event.status === "draft").map(renderEventCard)}
+              <TabsContent value="all" className="space-y-4">
+                {events.map(renderEventCard)}
+              </TabsContent>
+              <TabsContent value="live" className="space-y-4">
+                {liveEvents.map(renderEventCard)}
+              </TabsContent>
+              <TabsContent value="sold-out" className="space-y-4">
+                {events.filter((event) => event.status === "sold-out").map(renderEventCard)}
+              </TabsContent>
+              <TabsContent value="draft" className="space-y-4">
+                {events.filter((event) => event.status === "draft").map(renderEventCard)}
+              </TabsContent>
+            </Tabs>
           </TabsContent>
         </Tabs>
       </main>
